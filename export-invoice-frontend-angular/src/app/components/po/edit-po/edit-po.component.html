@@ -1,0 +1,71 @@
+
+
+    <form #form="ngForm" (ngSubmit)="updatePo()">
+        <h1 >Edit PO</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+            <label for="name" class="form-label">Po Name</label>
+           <input type="text" class="form-control" id="name" required #name="ngModel"
+            name="name" [(ngModel)]="poDetails.name">
+            <div class="error-field" *ngIf="name.invalid && (name.dirty || name.touched)">
+                <div *ngIf="name.errors?.['required']">PO Name is required</div>
+              </div>
+        </div> 
+        <div class="form-group">
+            <label for="email" class="form-label">Email</label>
+           <input type="email" class="form-control" id="email" 
+            name="email" [(ngModel)]="poDetails.email"required email #email="ngModel">
+            <div  class="error-field" *ngIf="email.invalid && (email.dirty || email.touched)">
+                <div *ngIf="email.errors?.['required']">Email is required</div>
+                <div *ngIf="email.errors?.['email']">Invalid email format</div>
+              </div>
+        </div> 
+        <div class="form-group">
+            <label for="phone" class="form-label">Phone</label>
+           <input type="text" class="form-control" id="phone" 
+            name="phone" [(ngModel)]="poDetails.phone" required pattern="[0-9]{10}" #phone="ngModel">
+            <div  class="error-field" *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+                <div *ngIf="phone.errors?.['required']">Phone is required</div>
+                <div *ngIf="phone.errors?.['pattern']">Phone number must be 10 digits</div>
+              </div>
+        </div> 
+        <div class="form-group">
+            <label for="amount" class="form-label">Amount</label>
+           <input type="number" class="form-control" id="amount" 
+            name="amount" [(ngModel)]="poDetails.amount" required #amount="ngModel" required pattern="^[1-9]\d*$">
+            <div  class="error-field" *ngIf="amount.invalid && (amount.dirty || amount.touched)">
+
+            <div *ngIf="amount.errors?.['required']">Amount is required</div>
+            <div *ngIf="amount.errors?.['pattern']">Amount must be more than 0</div>
+            </div>
+            </div>
+            <div class="form-group">
+                <label for="start_date" class="form-label">Start date</label>
+           <input type="date" class="form-control" id="start_date" 
+            name="start_date" [(ngModel)]="poDetails.start_date" required #start_date="ngModel" pattern="\d{4}-\d{2}-\d{2}">
+            <div  class="error-field" *ngIf="start_date.invalid && (start_date.dirty || start_date.touched)">
+            <div *ngIf="start_date.errors?.['required']">Start Date is required</div>
+            <div *ngIf="start_date.errors?.['pattern']">Start Date is invalid</div>
+
+
+            </div> 
+        </div>
+        <div class="form-group">
+            <label for="due_date" class="form-label">Due date</label>
+           <input type="date" class="form-control" id="due_date" 
+            name="due_date" [(ngModel)]="poDetails.due_date" required #due_date="ngModel" pattern="\d{4}-\d{2}-\d{2}">
+            <div class="error-field" *ngIf="due_date.invalid && (due_date.dirty || due_date .touched)">
+            <div *ngIf="due_date.errors?.['required']">Due Date is required</div>
+            <div *ngIf="due_date.errors?.['pattern']">Due Date is invalid</div>
+
+        </div> 
+        </div> 
+        <div   style="margin-top: 20px;">
+
+        <button style="margin-right: 10px;"  type="submit" class="btn btn-primary mr-5" [disabled]="!form.valid">Save</button>
+        <a class="btn btn-secondary" routerLink="/po">Cancel</a>
+        </div>
+    </div>
+
+</div>        </form>

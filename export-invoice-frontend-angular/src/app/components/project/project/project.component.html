@@ -1,0 +1,195 @@
+<div class="container my-3" style="font-size: 15px;">
+  <div style="display: flex; padding-bottom: 10px;">
+  <h1 class="mb-3" style="margin-left: 30%;">PROJECT MANAGEMENT</h1>
+ 
+</div>
+    <div class="header-container">
+        <div class="project-header" >
+          <button style="margin-right:5px" class="btn btn-primary" [routerLink]="['/project','add']">
+            <i class="fa fa-plus"></i> Add
+        </button>  
+          <button class="btn btn-warning" (click)="exportAllInvoices()">
+            <i class="fa fa-file-export"  ></i> Export all projects
+        </button>   
+        </div>
+   <div class="search-bar">
+     <form (ngSubmit)="onSearch()" #searchForm="ngForm">
+       <div class="search-input">
+         <input type="text" class="form-control" id="po_name" name="po_name" placeholder="Search for PO" [(ngModel)]="po_name" required>
+       </div>
+       <button type="submit" class="btn btn-info">
+        <i class="fa fa-search"  ></i>
+        Search</button>
+     </form>
+   </div>
+ </div>
+
+ <div *ngIf="!po_name ">
+     <table  class="table">
+       <thead   style="font-size: 20px;">
+         <tr>
+             <th>Project</th>
+             <th>Start date</th>
+             <th>End date</th>
+             <th>PO</th>
+             <th>Billable</th>
+             <th>Rate(USD)</th>
+             <th>Capex code</th>
+             <th>Status</th>
+             <th>Action</th>
+         </tr>
+       </thead>
+       <tbody style="font-size: 20px;">
+       
+        <tr *ngFor="let project of projects | paginate: { itemsPerPage: pageSize, currentPage: p }; let i = index"
+        [ngClass]="{'bg-running': getStatus(project.due_date) === 'Running', 'bg-expired': getStatus(project.due_date) === 'Expired'}">
+        <td>{{project.name}}</td>
+        <td>
+           {{project.start_date}}
+        </td>
+        <td>
+         
+          {{project.due_date}}
+</td>
+        <td > 
+          <button type="button" class="btn btn-outline-light text-dark mt-n2 po-btn" data-toggle="modal" data-target="#poModal" (click)="showPoInfo(project.poId)"
+                  [class.bg-running]="getStatus(project.due_date) === 'Running'"
+                  [class.bg-expired]="getStatus(project.due_date) === 'Expired'">
+                  {{getProjectPoName(project.poId)}}
+          </button>
+      </td>
+
+
+        <!-- <td>{{project.reference}}</td> -->
+        <td>{{project.billable}}</td>
+        <td>{{project.rate}}</td>
+        <!-- <td class="employee-cell">
+            <ul *ngIf="project.employeeNames.length <= 5; else na">
+                <li *ngFor="let employeeName of project.employeeNames">{{employeeName}}</li>
+            </ul>
+            <ng-template #na>
+                <div class="na-cell">N/A</div>
+            </ng-template>
+        </td> -->
+        <td>{{project.capex_code}}</td>
+        <td>{{ getStatus(project.due_date)}}</td>
+        <td   >
+            <a style="margin-right: 1%" data-bs-toggle="tooltip" title="View project" class="btn btn-primary" [routerLink]="['/project','edit', project.projectId]" >
+              <i class="fas fa-edit"></i> 
+
+            </a>
+            <button style="margin-right: 1%"  data-bs-toggle="tooltip" title="Delete" class="btn btn-danger" (click)="deleteProject(project.projectId)">
+              <i class="fas fa-trash"></i> 
+            </button>
+            <button style="margin-right: 1%"  data-bs-toggle="tooltip" title="Export this invoice"  type="button" class="btn btn-warning" (click)="downloadInvoice(project.projectId)">
+                <i class="fas fa-file-export"></i>
+            </button>
+        </td>
+    </tr> 
+       </tbody>
+     </table>
+   </div>
+   
+   <div class='container'>
+   <div class="modal fade" id="poModal" tabindex="-1" role="dialog" aria-labelledby="poModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="poModalLabel">PO Information</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Name:</strong> {{poDetails.name}}</p>
+          <p><strong>Email:</strong> {{poDetails.email}}</p>
+          <p><strong>Phone:</strong> {{poDetails.phone}}</p>
+          <p><strong>Amount:</strong> {{poDetails.amount}}</p>
+          <p><strong>Start date:</strong> {{poDetails.start_date}}</p>
+          <p><strong>End date:</strong> {{poDetails.due_date}}</p>
+          <p [class.text-danger]="getStatusPO(poDetails.id) < 0">
+            <strong>Remaining:</strong> {{getRemainingOfPO(poDetails.id)}}
+          </p>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+   <div *ngIf="po_name && matchingProjects.length === 0">
+     <table class="table">
+         <thead style="font-size: 20px;">
+           <tr>
+             <th>Project</th>
+             <th>Start date</th>
+             <th>End date</th>
+             <th>PO</th>
+             <th>Billable</th>
+             <th>Rate(USD)</th>
+             <th>Capex code</th>
+             <th>Status</th>   
+             <th>Action</th>
+           </tr>
+         </thead>
+         <tbody style="font-size: 20px;">
+             <tr>
+                 <td colspan="11" class=" text-danger font-weight-bold">No matching projects found</td>
+               </tr>
+         </tbody>
+     </table>
+ </div>
+ 
+   <div *ngIf="po_name && matchingProjects.length > 0">
+     <table class="table">
+       <thead style="font-size: 20px;">
+         <tr>
+           <th>Project</th>
+           <th>Start date</th>
+           <th>End date</th>
+           <th>PO</th>
+           <th>Billable</th>
+           <th>Rate(USD)</th>
+           <th>Capex code</th>
+           <th>Status</th>
+           <th>Action</th>
+         </tr>
+       </thead>
+       <tbody style="font-size: 20px;">
+         <tr *ngFor="let project of matchingProjects | paginate: { itemsPerPage: pageSize, currentPage: p }; let i = index" 
+         [ngClass]="{'bg-running': getStatus(project.due_date) === 'Running', 'bg-expired': getStatus(project.due_date) === 'Expired'}">
+
+             <td>{{project.name}}</td>
+
+             <td>{{project.start_date}}</td>
+             <td>{{project.due_date}}</td>
+             <td> 
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#poModal" (click)="showPoInfo(project.id)"
+                        [class.bg-running]="getStatus(project.due_date) === 'Running'"
+                        [class.bg-expired]="getStatus(project.due_date) === 'Expired'">
+                        {{getProjectPoName(project.id)}}
+                </button>
+            </td>
+
+             <td>{{project.billable}}</td>
+             <td>{{project.rate}}</td>
+             <td>{{project.capex_code}}</td>
+             <td>{{ getStatus(project.due_date)}}</td>
+             <td>
+             <a style="margin-right: 1%" [routerLink]="['/project','edit', project.projectId]" class="btn btn-primary">
+              <i class="fas fa-edit"></i> 
+            </a>
+             <button style="margin-right: 1%"  type="button" class="btn btn-danger" (click)="deleteProject(project.projectId)">  <i class="fas fa-trash"></i> </button>
+             <button style="margin-right: 1%"  type="button" class="btn btn-warning" (click)="downloadInvoice(project.projectId)">
+                <i class="fas fa-file-export"></i>
+             </button>
+            </td>
+         </tr>
+       </tbody>
+     </table>
+    </div>
+  </div>
+   
+     <pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls> 
+
+

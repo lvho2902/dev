@@ -1,0 +1,28 @@
+ <!-- <div class="wrapper" > -->
+	<form  #login="ngForm" >
+	<div fxLayout="row" fxLayoutAlign="center center" class="login-main">
+		<mat-card >
+			<mat-card-header style="margin-bottom: 10px;">
+				<i class="fa fa-sign-in-alt" style="font-size:24px; padding-left: 5px;"></i>
+				<mat-card-title >LOGIN</mat-card-title>
+			  </mat-card-header>
+			  <mat-card-content fxLayout="column">
+			<mat-form-field >
+            <input matInput type="email" placeholder="Email" [(ngModel)]="credentials.email"  name="email" #email="ngModel" required>
+		</mat-form-field>
+		<mat-form-field>
+
+			<input matInput type="password" placeholder="Password" [(ngModel)]="credentials.password" id="password" name="password" #password="ngModel" required>
+			</mat-form-field>
+
+			<mat-checkbox  type="checkbox" value="lsRememberMe" id="rememberMe" (change)="onCheckboxChange($event)">	
+			Remember me	
+		</mat-checkbox>
+
+			<mat-card-actions align='end'>
+			<button mat-raised-button color="primary" type="submit"  (click)="onSubmit()" >Sign in</button>
+		  </mat-card-actions>
+		</mat-card-content>
+	</mat-card>
+	</div>
+</form>

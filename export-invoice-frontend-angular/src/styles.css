@@ -1,0 +1,153 @@
+/* You can add global styles to this file, and also import other style files */
+
+.green-snackbar { background: rgb(30, 121, 63);}
+.coral-snackbar { background: coral;}
+.red-snackbar { background-color: rgb(209, 70, 70);}
+html, body {
+  height: 100%;
+}
+.mat-snack-bar-container-green{
+    background: rgb(30, 121, 63);
+    display: flex;
+    color: white;
+    height: 0px;
+    font-weight: bold;
+    max-width: 100% !important;
+    font-size: 15px !important; 
+    align-items: center !important;
+    justify-content: center !important;
+    top: 90% !important;
+    position: absolute !important;
+    
+}
+.mat-snack-bar-container-red{
+    background-color: rgb(209, 70, 70);
+    display: flex;
+    color: white;
+    height: 0px;
+    font-weight: bold;
+    max-width: 100% !important;
+    font-size: 15px !important; 
+    align-items: center !important;
+    justify-content: center !important;
+    top: 90% !important;
+    position: absolute !important;
+    
+}
+.mat-snack-bar-container-coral{
+    background: coral;
+    display: flex;
+    color: white;
+    height: 0px;
+    font-weight: bold;
+    max-width: 100% !important;
+    font-size: 15px !important; 
+    align-items: center !important;
+    justify-content: center !important;
+    top: 90% !important;
+    position: absolute !important;
+    
+}
+.mat-snack-bar-container-red button {
+    color: white !important;
+    border: none;
+}
+
+.mat-snack-bar-container-green button {
+    color: white !important;
+    border: none;
+}
+.mat-snack-bar-container-coral button {
+    color: white !important;
+    border: none;
+}
+/* Style for form elements */
+.error-field{
+    color: red;
+    margin-top: 5px;
+  }
+  .form-control {
+    height: 40px;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    background-color: #f5f5f5;
+    color: #333;
+  }
+  
+  textarea.form-control {
+    height: 120px;
+  }
+  
+  label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  select.form-control option {
+    color: #333;
+  }
+  
+  /* Style for form container */
+  
+  .form-container {
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Style for form buttons */
+  
+  .btn {
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    padding: 12px 24px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .btn-primary {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0069d9;
+  }
+  
+  /* Style for form validation errors */
+  
+  .error-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 5px;
+  }
+  
+  
+  .checked {
+    background-color: #e6f7ff;
+    color: #1890ff;
+  }
+  
+  .cdk-overlay-container  {
+    margin-top: 30px;
+  }
+  
+  .cdk-overlay-option  {
+     /* margin-left: 60%; */
+     padding-left: 50%;
+  }
+  
+  .cdk-overlay-backdrop cdk-overlay-transparent-backdrop cdk-overlay-backdrop-showing{
+    margin-left: 60%;
+  
+  }
+
+  nz-select {
+    width: 100%;
+  }

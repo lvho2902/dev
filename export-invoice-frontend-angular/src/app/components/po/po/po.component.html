@@ -1,0 +1,123 @@
+<div class="container my-3" style="font-size: 15px;">
+  <div style="display: flex; padding-bottom: 10px;">
+    <h1 class="mb-3" style="margin-left: 30%;">PO MANAGEMENT</h1>
+    </div>
+    <div class="header-container">
+      <div class="po-header">
+    <button class="btn btn-primary" [routerLink]="['/po','add']" >
+      <i class="fa fa-plus"></i> Add
+    </button>   
+  </div> 
+    <div class="search-bar" >
+    <form #searchForm="ngForm" (ngSubmit)="onSearch()" >
+      <div class="search-input">
+        <input type="text" class="form-control" id="po_name" name="po_name" placeholder="Search for PO"  [(ngModel)]="po_name" >
+      </div>
+        <button type="submit" class="btn btn-info" >
+          <i class="fa fa-search"></i>Search
+        </button>
+    </form>
+</div>
+</div>
+  <div *ngIf="!po_name ">
+    <table class="table">
+        <thead   style="font-size: 20px;">
+            <tr>
+                <th>#</th>
+                <th>PO Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Amount</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Remaining</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody style="font-size: 20px;">
+          <tr *ngFor="let po of pos | paginate: { itemsPerPage: pageSize, currentPage: p }; let i = index" >
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{i+1}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.name}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.email}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.phone}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.amount}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.start_date}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.due_date}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{getRemainingOfPO(po.id)}}</td>
+              <td>
+              <a style="margin-right: 1%"  data-bs-toggle="tooltip" title="Edit" [routerLink]="['/po','edit', po.id]" class="btn btn-primary ">
+                <i class="fas fa-edit"></i> 
+              </a>
+              <button style="margin-right: 1%"  data-bs-toggle="tooltip" title="Delete"  type="button" class="btn btn-danger" (click)="deletePo(po.id)">
+                <i class="fas fa-trash"></i> 
+              </button>
+              </td>
+            </tr>
+          </tbody>
+    </table>
+ </div>
+
+  <div *ngIf="po_name && matchingPO.length === 0" class="text-center">
+    <table class="table">
+      <thead   style="font-size: 20px;">
+          <tr>
+              <th>#</th>
+              <th>PO Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Amount</th>
+              <th>Start date</th>
+              <th>End date</th>
+              <th>Remaining</th>
+              <th>Action</th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr>
+            <td colspan="11" class=" text-danger font-weight-bold">No matching PO found</td>
+          </tr>
+    </tbody>
+</table>
+</div>
+
+    <div *ngIf="po_name && matchingPO.length > 0">
+      <table class="table">
+        <thead   style="font-size: 20px;">
+            <tr>
+                <th>#</th>
+                <th>PO Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Amount</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Remaining</th>
+                <th>Action</th>
+
+            </tr>
+        </thead>
+        <tbody style="font-size: 20px;">
+            <tr *ngFor="let po of matchingPO | paginate: { itemsPerPage: pageSize, currentPage: p }; let i = index">
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{i+1}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.name}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.email}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.phone}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.amount}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.start_date}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.due_date}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{getRemainingOfPO(po.id)}}</td>
+              <td></td>
+              <td>
+              <a style="margin-right: 1%"  data-bs-toggle="tooltip" title="Edit" [routerLink]="['/po','edit', po.id]" class="btn btn-primary ">
+                <i class="fas fa-edit"></i> 
+              </a>
+              <button style="margin-right: 1%"  data-bs-toggle="tooltip" title="Delete"  type="button" class="btn btn-danger" (click)="deletePo(po.id)">
+                <i class="fas fa-trash"></i> 
+              </button>
+              </td>
+            </tr>
+          </tbody>
+    </table>
+    </div>
+
+    <pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
