@@ -17,33 +17,33 @@ export class AddProjectComponent implements OnInit {
   employees: Employee[] = [];
   pos: Po[] = [];
   addProjectRequest: Project = {
-    projectId: 'Name',
+    id: 'Name',
     name: '',
-    desc: '',
-    start_date: new Date(),
-    due_date: new Date(),
+    description: '',
+    startDate: new Date(),
+    dueDate: new Date(),
     poId: '',
     reference: '',
     billable: 0,
     rate: 0,
-    capex_code: '',
+    capexCode: '',
     employeeNames: [],
   };
   addEmployeeRequest: PostProject = {
-    projectId: '',
+    id: '',
     name: '',
-    desc: '',
-    start_date: new Date(),
-    due_date: new Date(),
-    poId: '',
+    description: '',
+    startDate: new Date(),
+    dueDate: new Date(),
+    purchaseOrderId: '',
     reference: '',
     billable: 0,
     rate: 0,
-    capex_code: '',
+    capexCode: '',
     employeeIds: [],
 
   };
-  selectedEmployeeIds: string[] = [];
+  selectedids: string[] = [];
   
   showError = false;
   projectErrorMessage = '';
@@ -59,7 +59,7 @@ export class AddProjectComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.selectedEmployeeIds = this.employees.filter(employee => employee.employeeId).map(employee => employee.employeeId);
+    this.selectedids = this.employees.filter(employee => employee.id).map(employee => employee.id);
 
     this.projectService
       .getProject()
@@ -77,8 +77,8 @@ export class AddProjectComponent implements OnInit {
   }
 
   compareDate(): boolean {
-    const startDate = new Date(this.addEmployeeRequest.start_date);
-    const endDate = new Date(this.addEmployeeRequest.due_date);
+    const startDate = new Date(this.addEmployeeRequest.startDate);
+    const endDate = new Date(this.addEmployeeRequest.dueDate);
     console.log(startDate)
     if (endDate < startDate) {
       this.SnackbarService.showSnackBar("Please ensure that the due date is greater than to start date.", 'mat-snack-bar-container-coral');

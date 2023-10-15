@@ -8,4 +8,5 @@ import com.lvho.invoice.entity.PurchaseOrder;
 @Repository
 public interface PurchaseOrderRepo extends JpaRepository<PurchaseOrder, String>
 {
+    public PurchaseOrder findByName(String name);
 }

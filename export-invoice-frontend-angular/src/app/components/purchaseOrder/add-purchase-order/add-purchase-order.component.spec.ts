@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditPoComponent } from './edit-po.component';
+import { AddPoComponent } from './add-purchase-order.component';
 
-describe('EditPoComponent', () => {
-  let component: EditPoComponent;
-  let fixture: ComponentFixture<EditPoComponent>;
+describe('AddPoComponent', () => {
+  let component: AddPoComponent;
+  let fixture: ComponentFixture<AddPoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditPoComponent ]
+      declarations: [ AddPoComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EditPoComponent);
+    fixture = TestBed.createComponent(AddPoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

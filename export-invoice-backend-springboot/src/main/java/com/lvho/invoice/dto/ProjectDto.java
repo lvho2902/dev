@@ -2,8 +2,6 @@ package com.lvho.invoice.dto;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +28,6 @@ public class ProjectDto {
 
     public String capexCode;
 
-    @JsonIgnore
     public List<String> employeeIds;
 
     public String purchaseOrderId; 

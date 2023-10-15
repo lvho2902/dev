@@ -12,7 +12,7 @@ export class PoService {
 
   private url = "purchase-order";
   private url_search = "Project/search";
-  private url_getproject = "Project"
+  private url_getproject = "project"
   private url_audit = "ChangeLog";
   
   constructor(private http: HttpClient) { }
@@ -23,13 +23,13 @@ export class PoService {
   }
 
   public addPo(addPoRequest: Po): Observable<Po[]> {
-    addPoRequest.id = ''
+    // addPoRequest.id = ''
 
     return this.http.post<Po[]>(`${environment.apiUrl}/${this.url}`, addPoRequest, httpOptions);
   }
 
   public getPoId(id: string): Observable<Po> {
-    return this.http.get<Po>(`${environment.apiUrl}/${this.url}` + '/' + id + '?id=' + id, httpOptions);
+    return this.http.get<Po>(`${environment.apiUrl}/${this.url}` + '/' + id, httpOptions);
   }
 
   public updatePo(updatePoRequest: Po): Observable<Po> {
@@ -37,7 +37,7 @@ export class PoService {
   }
 
   public deletePo(id: string): Observable<Po> {
-    return this.http.delete<Po>(`${environment.apiUrl}/${this.url}` + '/' + id + '?id=' + id, httpOptions);
+    return this.http.delete<Po>(`${environment.apiUrl}/${this.url}` + '/' + id, httpOptions);
   }
 
   searchPo(poName: string): Observable<Po[]> {

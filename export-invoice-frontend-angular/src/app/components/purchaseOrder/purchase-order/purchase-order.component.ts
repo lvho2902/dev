@@ -3,14 +3,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ChangeLog, Po, Project } from 'src/app/models/invoice';
 import { AuthService } from 'src/app/services/authentication.service';
-import { PoService } from 'src/app/services/po.service';
+import { PoService } from 'src/app/services/purchaseOrder.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { SnackbarService } from 'src/app/services/showSnackBar';
 
 @Component({
-  selector: 'app-po',
-  templateUrl: './po.component.html',
-  styleUrls: ['./po.component.css']
+  selector: 'app-purchase-order',
+  templateUrl: './purchase-order.component.html',
+  styleUrls: ['./purchase-order.component.css']
 })
 export class PoComponent implements OnInit
 {
@@ -23,8 +23,8 @@ export class PoComponent implements OnInit
     email: '',
     phone: 0,
     amount: 0,
-    start_date: new Date(),
-    due_date: new Date(),
+    startDate: new Date(),
+    dueDate: new Date()
 };
 p: number = 1;
 pageSize: number = 10;
@@ -43,7 +43,7 @@ constructor(
 
 ngOnInit(): void {
   if (this.authService.isAuthenticated()) {
-    this.router.navigate(['/po']);
+    this.router.navigate(['/purchase-order']);
   }
   else{
     this.router.navigate(['/login']);
@@ -69,7 +69,7 @@ deletePo(id: string) {
   this.poService.deletePo(id)
   .subscribe({
     next: () => {
-      this.router.navigate(['po']);
+      this.router.navigate(['purchase-order']);
       this.SnackbarService.showSnackBar("Delete successfully!!!", 'mat-snack-bar-container-green');
       this.poService
       .getPo()
@@ -101,9 +101,9 @@ deletePo(id: string) {
 
 
       for (const project of projectsIncludePO) {
-        const auditIncludeProject = this.logs.filter(item => item.primaryKeyValue === project.projectId);
-        const startDate = new Date(project.start_date);
-        const endDate = new Date(project.due_date);
+        const auditIncludeProject = this.logs.filter(item => item.primaryKeyValue === project.id);
+        const startDate = new Date(project.startDate);
+        const endDate = new Date(project.dueDate);
 
         if (auditIncludeProject.length === 1) 
         {

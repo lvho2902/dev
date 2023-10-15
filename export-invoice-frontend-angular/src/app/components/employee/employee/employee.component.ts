@@ -18,7 +18,7 @@ export class EmployeeComponent implements OnInit
 
   employees: Employee[] = [];
   EmployeeRequest: Employee = {
-    employeeId: "",
+    id: "",
     name: '',
     email: '',
     phone: 0,
@@ -44,8 +44,8 @@ export class EmployeeComponent implements OnInit
   .subscribe((result: Employee[]) => (this.employees = result)); 
   }
 
-  deleteEmployee(employeeId: string) {
-    this.employeeService.deleteEmployee(employeeId)
+  deleteEmployee(id: string) {
+    this.employeeService.deleteEmployee(id)
     .subscribe({
       next: () => {
         this.router.navigate(['employee']);

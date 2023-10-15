@@ -14,8 +14,6 @@ import com.lvho.invoice.custom.ApiResponse;
 import com.lvho.invoice.entity.PurchaseOrder;
 import com.lvho.invoice.service.PurchaseOrderService;
 
-import jakarta.validation.Valid;
-
 import java.util.List;
 @RestController
 public class PurchaseOrderController
@@ -36,10 +34,10 @@ public class PurchaseOrderController
     }
 
     @PostMapping("purchase-order")
-    public ResponseEntity<ApiResponse<PurchaseOrder>> create(@Valid @RequestBody PurchaseOrder model)
+    public ResponseEntity<ApiResponse<PurchaseOrder>> create(@RequestBody PurchaseOrder model)
     {
         PurchaseOrder createdEntity = service.create(model);
-        ApiResponse<PurchaseOrder> response = new ApiResponse<>(true, "Purchase order entity created successfully", createdEntity);
+        ApiResponse<PurchaseOrder> response = new ApiResponse<PurchaseOrder>("Purchase order entity created successfully", createdEntity);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }    
 
@@ -47,18 +45,14 @@ public class PurchaseOrderController
     public ResponseEntity<ApiResponse<PurchaseOrder>> delete(@PathVariable String id) 
     {
         PurchaseOrder deletedEntity = service.delete(id);
-        ApiResponse<PurchaseOrder> response;
-        if(deletedEntity != null) response = new ApiResponse<>(true, "Purchase order entity deleted successfully", deletedEntity);
-        else response = new ApiResponse<>(false, "Purchase order entity create failed", deletedEntity);
+        ApiResponse<PurchaseOrder> response = new ApiResponse<PurchaseOrder>("Purchase order entity deleted successfully", deletedEntity);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
     
     @PutMapping("/purchase-order")
     public ResponseEntity<ApiResponse<PurchaseOrder>> update(@RequestBody PurchaseOrder model) {
         PurchaseOrder updatedEntity = service.update(model.id, model);
-        ApiResponse<PurchaseOrder> response;
-        if(updatedEntity != null) response = new ApiResponse<>(true, "Purchase order entity udapted successfully", updatedEntity);
-        else response = new ApiResponse<>(false, "Purchase order entity udapted failed", updatedEntity);
+        ApiResponse<PurchaseOrder> response = new ApiResponse<PurchaseOrder>("Purchase order entity updated successfully", updatedEntity);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

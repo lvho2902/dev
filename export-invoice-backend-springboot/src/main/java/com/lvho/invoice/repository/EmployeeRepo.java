@@ -8,4 +8,5 @@ import com.lvho.invoice.entity.Employee;
 @Repository
 public interface EmployeeRepo extends JpaRepository<Employee, String>
 {
+    public Employee findByEmail(String email);
 }

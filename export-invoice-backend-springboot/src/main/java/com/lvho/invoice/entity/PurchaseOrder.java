@@ -37,7 +37,6 @@ public class PurchaseOrder {
     public String phone;
 
     @Column()
-    @NotBlank
     public String amount;
 
     @Column()

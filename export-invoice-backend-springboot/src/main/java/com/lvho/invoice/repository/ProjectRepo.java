@@ -8,4 +8,5 @@ import com.lvho.invoice.entity.Project;
 @Repository
 public interface ProjectRepo extends JpaRepository<Project, String> 
 {
+    public Project findByName(String name);
 }

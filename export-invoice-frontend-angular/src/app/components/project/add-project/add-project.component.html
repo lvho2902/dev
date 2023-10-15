@@ -13,31 +13,31 @@
       <div class="form-group">
                 <label for="description" class="form-label">Description</label>
                 <textarea class="form-control" id="description" 
-                    name="description" [(ngModel)]="addEmployeeRequest.desc"></textarea>
+                    name="description" [(ngModel)]="addEmployeeRequest.description"></textarea>
             </div>
         <div class="form-group">
-            <label for="start_date" class="form-label">Start date</label>
-           <input type="date" class="form-control" id="start_date"
-            name="start_date" [(ngModel)]="addEmployeeRequest.start_date" required #start_date="ngModel" pattern="\d{4}-\d{2}-\d{2}">
+            <label for="startDate" class="form-label">Start date</label>
+           <input type="date" class="form-control" id="startDate"
+            name="startDate" [(ngModel)]="addEmployeeRequest.startDate" required #startDate="ngModel" pattern="\d{4}-\d{2}-\d{2}">
             <span id="startDateError"></span>
 
-            <div  class="error-field" *ngIf="start_date.invalid && (start_date.dirty || start_date.touched)">
-                <div *ngIf="start_date.errors?.['required']">Start Date is required</div>
-                <div *ngIf="start_date.errors?.['pattern']">Start Date is invalid</div>
+            <div  class="error-field" *ngIf="startDate.invalid && (startDate.dirty || startDate.touched)">
+                <div *ngIf="startDate.errors?.['required']">Start Date is required</div>
+                <div *ngIf="startDate.errors?.['pattern']">Start Date is invalid</div>
                 </div> 
         </div> 
         <div class="form-group">
-            <label for="due_date" class="form-label">Due date</label>
-           <input type="date" class="form-control" id="due_date"
-            name="due_date"  [(ngModel)]="addEmployeeRequest.due_date" required #due_date="ngModel" pattern="\d{4}-\d{2}-\d{2}">
-        <div  class="error-field" *ngIf="due_date.invalid && (due_date.dirty || due_date.touched)">
-            <div *ngIf="due_date.errors?.['required']">Due Date is required</div>
-            <div *ngIf="due_date.errors?.['pattern']">Due Date is invalid</div>
+            <label for="dueDate" class="form-label">Due date</label>
+           <input type="date" class="form-control" id="dueDate"
+            name="dueDate"  [(ngModel)]="addEmployeeRequest.dueDate" required #dueDate="ngModel" pattern="\d{4}-\d{2}-\d{2}">
+        <div  class="error-field" *ngIf="dueDate.invalid && (dueDate.dirty || dueDate.touched)">
+            <div *ngIf="dueDate.errors?.['required']">Due Date is required</div>
+            <div *ngIf="dueDate.errors?.['pattern']">Due Date is invalid</div>
         </div>
     </div> 
     <div class="form-group">
-        <label for="poId" class="form-label">PO</label>
-        <select class="form-control" [(ngModel)]="addEmployeeRequest.poId" required #poId="ngModel" [(ngModel)]="addEmployeeRequest.poId" [ngModelOptions]="{standalone: true}"  >
+        <label for="id" class="form-label">PO</label>
+        <select class="form-control" [(ngModel)]="addEmployeeRequest.purchaseOrderId" required #poId="ngModel" [(ngModel)]="addEmployeeRequest.purchaseOrderId" [ngModelOptions]="{standalone: true}"  >
             <option value="">-- Select a PO --</option>
             <option *ngFor="let po of pos" [ngValue]="po.id">{{po.name}}</option>
         </select>
@@ -76,9 +76,9 @@
         </div> 
 
         <div class="form-group">
-            <label for="capex_code" class="form-label">Capex code(Optinal)</label>
-           <input type="text" class="form-control" id="capex_code" 
-            name="capex_code" [(ngModel)]="addEmployeeRequest.capex_code">
+            <label for="capexCode" class="form-label">Capex code(Optinal)</label>
+           <input type="text" class="form-control" id="capexCode" 
+            name="capexCode" [(ngModel)]="addEmployeeRequest.capexCode">
         </div>
         <div *ngIf="nzMaxTagCount > 0">
         <label  style="margin-top: 10px" class="form-label">Employees</label>
@@ -90,7 +90,7 @@
             [(ngModel)]="addEmployeeRequest.employeeIds"
             name="employee"
             >
-                <nz-option   *ngFor="let employee of employees; let i = index" [nzLabel]="employee.name" [nzValue]="employee.employeeId" ></nz-option>
+                <nz-option   *ngFor="let employee of employees; let i = index" [nzLabel]="employee.name" [nzValue]="employee.id" ></nz-option>
               </nz-select> 
             </div>
     </div>

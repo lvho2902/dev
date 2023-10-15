@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 
     employees: Employee[] = [];
     EmployeeRequest: Employee = {
-      employeeId: "",
+      id: "",
       name: '',
       email: '',
       phone: 0,

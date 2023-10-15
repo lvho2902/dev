@@ -12,7 +12,7 @@ import { SnackbarService } from 'src/app/services/showSnackBar';
 })
 export class EditEmployeeComponent implements OnInit {
   employeeDetails: Employee = {
-    employeeId: '',
+    id: '',
     name: '',
     email: '',
     phone: 0,
@@ -26,10 +26,10 @@ export class EditEmployeeComponent implements OnInit {
       this.route.paramMap.subscribe(
         {
           next: (params) => {
-            const employeeId = params.get('id');
+            const id = params.get('id');
 
-            if (employeeId) {
-              this.employeeService.getEmployeeId(employeeId)
+            if (id) {
+              this.employeeService.getid(id)
               .subscribe({
                 next: (response: Employee) => {
                   console.log(response)

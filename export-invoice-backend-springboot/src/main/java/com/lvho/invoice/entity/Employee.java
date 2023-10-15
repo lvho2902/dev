@@ -1,8 +1,6 @@
 package com.lvho.invoice.entity;
 
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -14,10 +12,12 @@ import lombok.Setter;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,7 +32,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy =  GenerationType.UUID)
     @Column()
-    public String employeeId;
+    public String id;
 
     @Column()
     @NotBlank
@@ -45,11 +45,22 @@ public class Employee {
     @Column()
     public String phone;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-    name = "project_employee", 
-    joinColumns = @JoinColumn(name = "employee_id"), 
-    inverseJoinColumns = @JoinColumn(name = "project_id"))
+    @ManyToMany(fetch = FetchType.EAGER,
+        cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+        },
+        mappedBy = "employees")
     @JsonIgnore
-    public List<Project> projects;
+    public List<Project> projects = new ArrayList<Project>();
+
+    public void addProject(Project project) {
+        projects.add(project);
+        project.employees.add(this);
+    }
+
+    public void removeProject(Project project) {
+        projects.remove(project);
+        project.employees.remove(this);
+    }
 }

@@ -4,12 +4,12 @@ import { AddEmployeeComponent } from './components/employee/add-employee/add-emp
 import { EditEmployeeComponent } from './components/employee/edit-employee/edit-employee.component';
 import { AddProjectComponent } from './components/project/add-project/add-project.component';
 import { EditProjectComponent } from './components/project/edit-project/edit-project.component';
-import { AddPoComponent } from './components/po/add-po/add-po.component';
-import { EditPoComponent } from './components/po/edit-po/edit-po.component';
+import { AddPoComponent } from './components/purchaseOrder/add-purchase-order/add-purchase-order.component';
+import { EditPoComponent } from './components/purchaseOrder/edit-purchase-order/edit-purchase-order.component';
 import { LoginComponentTokenService } from './Authentication/login-authentication/login-authentication.component';
 import { LayoutComponent } from './LayoutComponents/layout/layout.component';
 import { EmployeeComponent } from './components/employee/employee/employee.component';
-import { PoComponent } from './components/po/po/po.component';
+import { PoComponent } from './components/purchaseOrder/purchase-order/purchase-order.component';
 import { ProjectComponent } from './components/project/project/project.component';
 import { GetAuditComponent } from './components/audit/get-audit/get-audit.component';
 
@@ -40,15 +40,15 @@ const routes: Routes = [
     component: EditProjectComponent
   },
   {
-    path: 'po',
+    path: 'purchase-order',
   component: PoComponent 
   },
   {
-    path: 'po/add',
+    path: 'purchase-order/add',
     component: AddPoComponent
   },
   {
-    path: 'po/edit/:id',
+    path: 'purchase-order/edit/:id',
     component: EditPoComponent
   },
   {

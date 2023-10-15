@@ -2,6 +2,7 @@ package com.lvho.invoice.entity;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -14,10 +15,13 @@ import lombok.Setter;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -39,7 +43,7 @@ public class Project {
     public String name;
 
     @Column()
-    public String desciprtion;
+    public String description;
 
     @Column()
     @NotBlank
@@ -59,14 +63,31 @@ public class Project {
     public int rate;
 
     @Column()
-    @NotBlank
     public String capexCode;
 
-    @ManyToMany(mappedBy = "projects", fetch = FetchType.EAGER)
-    public List<Employee> employees;
+    @ManyToMany(fetch = FetchType.EAGER,
+        cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+      })
+    @JoinTable(name = "project_employees",
+        joinColumns = { @JoinColumn(name = "project_id") },
+        inverseJoinColumns = { @JoinColumn(name = "employee_id") })
+    public List<Employee> employees = new ArrayList<Employee>();
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "purchase_order_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     public PurchaseOrder purchaseOrder;
+
+
+    public void addEmployee(Employee employee) {
+        employees.add(employee);
+        employee.projects.add(this);
+    }
+
+    public void removeEmployee(Employee employee) {
+        employees.remove(employee);
+        employee.projects.remove(this);
+    }
 }

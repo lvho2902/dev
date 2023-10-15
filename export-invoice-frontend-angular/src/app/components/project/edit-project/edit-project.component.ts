@@ -13,16 +13,16 @@ import { SnackbarService } from 'src/app/services/showSnackBar';
 })
 export class EditProjectComponent implements OnInit {
   projectDetails: PostProject = {
-    projectId: '',
+    id: '',
     name: '',
-    desc: '',
-    start_date: new Date(),
-    due_date: new Date(),
-    poId: '',
+    description: '',
+    startDate: new Date(),
+    dueDate: new Date(),
+    purchaseOrderId: '',
     reference: '',
     billable: 0,
     rate: 0,
-    capex_code: '',
+    capexCode: '',
     employeeIds: [],
   };
   employees: Employee[] = [];
@@ -37,10 +37,10 @@ export class EditProjectComponent implements OnInit {
     this.route.paramMap.subscribe(
       {
         next: (params) => {
-          const projectId = params.get('id');
+          const id = params.get('id');
 
-          if (projectId) {
-            this.projectService.getProjectId(projectId)
+          if (id) {
+            this.projectService.getid(id)
             .subscribe({
               next: (response: PostProject) => {
                 this.projectDetails = response;

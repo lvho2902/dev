@@ -4,7 +4,7 @@
     </div>
     <div class="header-container">
       <div class="po-header">
-    <button class="btn btn-primary" [routerLink]="['/po','add']" >
+    <button class="btn btn-primary" [routerLink]="['/purchase-order','add']" >
       <i class="fa fa-plus"></i> Add
     </button>   
   </div> 
@@ -41,11 +41,11 @@
               <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.email}}</td>
               <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.phone}}</td>
               <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.amount}}</td>
-              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.start_date}}</td>
-              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.due_date}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.startDate}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.dueDate}}</td>
               <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{getRemainingOfPO(po.id)}}</td>
               <td>
-              <a style="margin-right: 1%"  data-bs-toggle="tooltip" title="Edit" [routerLink]="['/po','edit', po.id]" class="btn btn-primary ">
+              <a style="margin-right: 1%"  data-bs-toggle="tooltip" title="Edit" [routerLink]="['/purchase-order','edit', po.id]" class="btn btn-primary ">
                 <i class="fas fa-edit"></i> 
               </a>
               <button style="margin-right: 1%"  data-bs-toggle="tooltip" title="Delete"  type="button" class="btn btn-danger" (click)="deletePo(po.id)">
@@ -103,12 +103,12 @@
               <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.email}}</td>
               <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.phone}}</td>
               <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.amount}}</td>
-              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.start_date}}</td>
-              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.due_date}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.startDate}}</td>
+              <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{po.dueDate}}</td>
               <td [ngClass]="{'text-danger': getStatusPO(po.id) < 0}">{{getRemainingOfPO(po.id)}}</td>
               <td></td>
               <td>
-              <a style="margin-right: 1%"  data-bs-toggle="tooltip" title="Edit" [routerLink]="['/po','edit', po.id]" class="btn btn-primary ">
+              <a style="margin-right: 1%"  data-bs-toggle="tooltip" title="Edit" [routerLink]="['/purchase-order','edit', po.id]" class="btn btn-primary ">
                 <i class="fas fa-edit"></i> 
               </a>
               <button style="margin-right: 1%"  data-bs-toggle="tooltip" title="Delete"  type="button" class="btn btn-danger" (click)="deletePo(po.id)">

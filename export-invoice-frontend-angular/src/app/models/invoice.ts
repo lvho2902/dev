@@ -5,37 +5,37 @@ export interface User {
 }
 
 export interface Employee {
-    employeeId: string;
+    id: string;
     name: string;
     email: string;
     phone: number;
 }
 
 export interface Project {
-    projectId: string;
+    id: string;
     name: string;
-    desc: string;
-    start_date: Date;
-    due_date: Date;
+    description: string;
+    startDate: Date;
+    dueDate: Date;
     poId: string;
     reference: string;
     billable: number;
     rate: number;
-    capex_code: string;
+    capexCode: string;
     employeeNames: string[];
 }
 
 export interface PostProject {
-    projectId: string;
+    id: string;
     name: string;
-    desc: string;
-    start_date: Date;
-    due_date: Date;
-    poId: string;
+    description: string;
+    startDate: Date;
+    dueDate: Date;
+    purchaseOrderId: string;
     reference: string;
     billable: number;
     rate: number;
-    capex_code: string;
+    capexCode: string;
     employeeIds: string[];
 }
 
@@ -46,8 +46,8 @@ export interface Po {
     email: string;
     phone: number;
     amount: number;
-    start_date: Date;
-    due_date: Date;
+    startDate: Date;
+    dueDate: Date;
 }
 
 export interface ChangeLog {

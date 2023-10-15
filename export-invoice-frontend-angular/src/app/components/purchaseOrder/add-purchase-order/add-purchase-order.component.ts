@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Po } from 'src/app/models/invoice';
-import { PoService } from 'src/app/services/po.service';
+import { PoService } from 'src/app/services/purchaseOrder.service';
 import { SnackbarService } from 'src/app/services/showSnackBar';
 
 @Component({
-  selector: 'app-add-po',
-  templateUrl: './add-po.component.html',
-  styleUrls: ['./add-po.component.css']
+  selector: 'app-add-purchase-order',
+  templateUrl: './add-purchase-order.component.html',
+  styleUrls: ['./add-purchase-order.component.css']
 })
 export class AddPoComponent implements OnInit 
 {
@@ -18,8 +18,8 @@ export class AddPoComponent implements OnInit
     email: '',
     phone: 0,
     amount: 1,
-    start_date: new Date(),
-    due_date: new Date(),
+    startDate: new Date(),
+    dueDate: new Date(),
 }
 
 constructor(private poService: PoService, private router: Router, private SnackbarService:SnackbarService) {}
@@ -30,8 +30,8 @@ ngOnInit(): void {
 .subscribe((result: Po[]) => (this.pos = result)); 
 }
 compareDate(): boolean {
-  const startDate = new Date(this.addPoRequest.start_date);
-  const endDate = new Date(this.addPoRequest.due_date);
+  const startDate = new Date(this.addPoRequest.startDate);
+  const endDate = new Date(this.addPoRequest.dueDate);
   console.log(startDate)
   if (endDate < startDate) {
     this.SnackbarService.showSnackBar("Please ensure that the due date is greater than to start date.", 'mat-snack-bar-container-coral');

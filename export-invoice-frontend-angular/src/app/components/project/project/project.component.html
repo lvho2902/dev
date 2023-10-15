@@ -42,19 +42,19 @@
        <tbody style="font-size: 20px;">
        
         <tr *ngFor="let project of projects | paginate: { itemsPerPage: pageSize, currentPage: p }; let i = index"
-        [ngClass]="{'bg-running': getStatus(project.due_date) === 'Running', 'bg-expired': getStatus(project.due_date) === 'Expired'}">
+        [ngClass]="{'bg-running': getStatus(project.dueDate) === 'Running', 'bg-expired': getStatus(project.dueDate) === 'Expired'}">
         <td>{{project.name}}</td>
         <td>
-           {{project.start_date}}
+           {{project.startDate}}
         </td>
         <td>
          
-          {{project.due_date}}
+          {{project.dueDate}}
 </td>
         <td > 
           <button type="button" class="btn btn-outline-light text-dark mt-n2 po-btn" data-toggle="modal" data-target="#poModal" (click)="showPoInfo(project.poId)"
-                  [class.bg-running]="getStatus(project.due_date) === 'Running'"
-                  [class.bg-expired]="getStatus(project.due_date) === 'Expired'">
+                  [class.bg-running]="getStatus(project.dueDate) === 'Running'"
+                  [class.bg-expired]="getStatus(project.dueDate) === 'Expired'">
                   {{getProjectPoName(project.poId)}}
           </button>
       </td>
@@ -71,17 +71,17 @@
                 <div class="na-cell">N/A</div>
             </ng-template>
         </td> -->
-        <td>{{project.capex_code}}</td>
-        <td>{{ getStatus(project.due_date)}}</td>
+        <td>{{project.capexCode}}</td>
+        <td>{{ getStatus(project.dueDate)}}</td>
         <td   >
-            <a style="margin-right: 1%" data-bs-toggle="tooltip" title="View project" class="btn btn-primary" [routerLink]="['/project','edit', project.projectId]" >
+            <a style="margin-right: 1%" data-bs-toggle="tooltip" title="View project" class="btn btn-primary" [routerLink]="['/project','edit', project.id]" >
               <i class="fas fa-edit"></i> 
 
             </a>
-            <button style="margin-right: 1%"  data-bs-toggle="tooltip" title="Delete" class="btn btn-danger" (click)="deleteProject(project.projectId)">
+            <button style="margin-right: 1%"  data-bs-toggle="tooltip" title="Delete" class="btn btn-danger" (click)="deleteProject(project.id)">
               <i class="fas fa-trash"></i> 
             </button>
-            <button style="margin-right: 1%"  data-bs-toggle="tooltip" title="Export this invoice"  type="button" class="btn btn-warning" (click)="downloadInvoice(project.projectId)">
+            <button style="margin-right: 1%"  data-bs-toggle="tooltip" title="Export this invoice"  type="button" class="btn btn-warning" (click)="downloadInvoice(project.id)">
                 <i class="fas fa-file-export"></i>
             </button>
         </td>
@@ -105,8 +105,8 @@
           <p><strong>Email:</strong> {{poDetails.email}}</p>
           <p><strong>Phone:</strong> {{poDetails.phone}}</p>
           <p><strong>Amount:</strong> {{poDetails.amount}}</p>
-          <p><strong>Start date:</strong> {{poDetails.start_date}}</p>
-          <p><strong>End date:</strong> {{poDetails.due_date}}</p>
+          <p><strong>Start date:</strong> {{poDetails.startDate}}</p>
+          <p><strong>End date:</strong> {{poDetails.dueDate}}</p>
           <p [class.text-danger]="getStatusPO(poDetails.id) < 0">
             <strong>Remaining:</strong> {{getRemainingOfPO(poDetails.id)}}
           </p>
@@ -157,16 +157,16 @@
        </thead>
        <tbody style="font-size: 20px;">
          <tr *ngFor="let project of matchingProjects | paginate: { itemsPerPage: pageSize, currentPage: p }; let i = index" 
-         [ngClass]="{'bg-running': getStatus(project.due_date) === 'Running', 'bg-expired': getStatus(project.due_date) === 'Expired'}">
+         [ngClass]="{'bg-running': getStatus(project.dueDate) === 'Running', 'bg-expired': getStatus(project.dueDate) === 'Expired'}">
 
              <td>{{project.name}}</td>
 
-             <td>{{project.start_date}}</td>
-             <td>{{project.due_date}}</td>
+             <td>{{project.startDate}}</td>
+             <td>{{project.dueDate}}</td>
              <td> 
                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#poModal" (click)="showPoInfo(project.id)"
-                        [class.bg-running]="getStatus(project.due_date) === 'Running'"
-                        [class.bg-expired]="getStatus(project.due_date) === 'Expired'">
+                        [class.bg-running]="getStatus(project.dueDate) === 'Running'"
+                        [class.bg-expired]="getStatus(project.dueDate) === 'Expired'">
                         {{getProjectPoName(project.id)}}
                 </button>
             </td>
@@ -174,13 +174,13 @@
              <td>{{project.billable}}</td>
              <td>{{project.rate}}</td>
              <td>{{project.capex_code}}</td>
-             <td>{{ getStatus(project.due_date)}}</td>
+             <td>{{ getStatus(project.dueDate)}}</td>
              <td>
-             <a style="margin-right: 1%" [routerLink]="['/project','edit', project.projectId]" class="btn btn-primary">
+             <a style="margin-right: 1%" [routerLink]="['/project','edit', project.id]" class="btn btn-primary">
               <i class="fas fa-edit"></i> 
             </a>
-             <button style="margin-right: 1%"  type="button" class="btn btn-danger" (click)="deleteProject(project.projectId)">  <i class="fas fa-trash"></i> </button>
-             <button style="margin-right: 1%"  type="button" class="btn btn-warning" (click)="downloadInvoice(project.projectId)">
+             <button style="margin-right: 1%"  type="button" class="btn btn-danger" (click)="deleteProject(project.id)">  <i class="fas fa-trash"></i> </button>
+             <button style="margin-right: 1%"  type="button" class="btn btn-warning" (click)="downloadInvoice(project.id)">
                 <i class="fas fa-file-export"></i>
              </button>
             </td>

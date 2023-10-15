@@ -3,9 +3,9 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group" >
-                <label for="projectId" class="form-label">Id</label>
-                <input type="text" class="form-control" id="projectId" readonly name="projectId"
-                    [(ngModel)]="projectDetails.projectId">
+                <label for="id" class="form-label">Id</label>
+                <input type="text" class="form-control" id="id" readonly name="id"
+                    [(ngModel)]="projectDetails.id">
             </div>
             <div class="form-group">
                 <label for="name" class="form-label">Project name</label>
@@ -16,31 +16,31 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="desc" class="form-label">Description</label>
-                <textarea class="form-control" id="desc" name="desc" [(ngModel)]="projectDetails.desc"></textarea>
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" [(ngModel)]="projectDetails.description"></textarea>
             </div>
             <div class="form-group">
-                <label for="start_date" class="form-label">Start date</label>
-                <input type="date" class="form-control" id="start_date" name="start_date"
-                    [(ngModel)]="projectDetails.start_date" required #start_date="ngModel" pattern="\d{4}-\d{2}-\d{2}">
-                <div class="error-field" *ngIf="start_date.invalid && (start_date.dirty || start_date.touched)">
-                    <div *ngIf="start_date.errors?.['pattern']">Start Date is required</div>
-                    <div *ngIf="start_date.errors?.['required']">Start Date is required</div>
+                <label for="startDate" class="form-label">Start date</label>
+                <input type="date" class="form-control" id="startDate" name="startDate"
+                    [(ngModel)]="projectDetails.startDate" required #startDate="ngModel" pattern="\d{4}-\d{2}-\d{2}">
+                <div class="error-field" *ngIf="startDate.invalid && (startDate.dirty || startDate.touched)">
+                    <div *ngIf="startDate.errors?.['pattern']">Start Date is required</div>
+                    <div *ngIf="startDate.errors?.['required']">Start Date is required</div>
                 </div>
             </div>
             <div class="form-group">
-                <label for="due_date" class="form-label">Due date</label>
-                <input type="date" class="form-control" id="due_date" name="due_date"
-                    [(ngModel)]="projectDetails.due_date" required #due_date="ngModel" pattern="\d{4}-\d{2}-\d{2}">
+                <label for="dueDate" class="form-label">Due date</label>
+                <input type="date" class="form-control" id="dueDate" name="dueDate"
+                    [(ngModel)]="projectDetails.dueDate" required #dueDate="ngModel" pattern="\d{4}-\d{2}-\d{2}">
             </div>
-            <div class="error-field" *ngIf="due_date.invalid && (due_date.dirty || due_date.touched)">
-                <div *ngIf="due_date.errors?.['pattern']">Due Date is required</div>
-                <div *ngIf="due_date.errors?.['required']">Due Date is required</div>
+            <div class="error-field" *ngIf="dueDate.invalid && (dueDate.dirty || dueDate.touched)">
+                <div *ngIf="dueDate.errors?.['pattern']">Due Date is required</div>
+                <div *ngIf="dueDate.errors?.['required']">Due Date is required</div>
             </div>
 
             <div class="form-group">
                 <label for="id" class="form-label">PO</label>
-                <select class="form-control" [(ngModel)]="projectDetails.poId" [ngModelOptions]="{standalone: true}">
+                <select class="form-control" [(ngModel)]="projectDetails.purchaseOrderId" [ngModelOptions]="{standalone: true}">
                     <option *ngFor="let po of pos" [ngValue]="po.id">{{po.name}}</option>
                 </select>
             </div>
@@ -75,9 +75,9 @@
             </div>
 
             <div class="form-group">
-                <label for="capex_code" class="form-label">Capex code(Not required)</label>
-                <input type="text" class="form-control" id="capex_code" name="capex_code"
-                    [(ngModel)]="projectDetails.capex_code">
+                <label for="capexCode" class="form-label">Capex code(Not required)</label>
+                <input type="text" class="form-control" id="capexCode" name="capexCode"
+                    [(ngModel)]="projectDetails.capexCode">
             </div>
             <div *ngIf="nzMaxTagCount > 0">
             <label  style="margin-top: 10px" class="form-label">Employees</label>
@@ -89,7 +89,7 @@
                name="employee">
                 <nz-option
                     *ngFor="let employee of employees; let i = index" [nzLabel]="employee.name"
-                    [nzValue]="employee.employeeId"></nz-option>
+                    [nzValue]="employee.id"></nz-option>
             </nz-select>
             </div>
         </div>

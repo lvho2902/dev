@@ -20,21 +20,21 @@ export class EmployeeService {
   }
 
   public addEmployee(addEmployeeRequest: Employee): Observable<Employee[]> {
-    addEmployeeRequest.employeeId = '00000'
+    addEmployeeRequest.id = '00000'
 
     return this.http.post<Employee[]>(`${environment.apiUrl}/${this.url}`, addEmployeeRequest, httpOptions);
   }
 
-  public getEmployeeId(employeeId: string): Observable<Employee> {
-    return this.http.get<Employee>(`${environment.apiUrl}/${this.url}` + '/' + employeeId + '?id=' + employeeId, httpOptions);
+  public getid(id: string): Observable<Employee> {
+    return this.http.get<Employee>(`${environment.apiUrl}/${this.url}` + '/' + id, httpOptions);
   }
 
   public updateEmployee(updateEmployeeRequest: Employee): Observable<Employee> {
     return this.http.put<Employee>(`${environment.apiUrl}/${this.url}`, updateEmployeeRequest, httpOptions);
   }
 
-  public deleteEmployee(employeeId: string): Observable<Employee> {
-    return this.http.delete<Employee>(`${environment.apiUrl}/${this.url}` + '/' + employeeId + '?id=' + employeeId, httpOptions);
+  public deleteEmployee(id: string): Observable<Employee> {
+    return this.http.delete<Employee>(`${environment.apiUrl}/${this.url}` + '/' + id, httpOptions);
   }
   
   searchByName(name: string): Observable<Employee[]> {

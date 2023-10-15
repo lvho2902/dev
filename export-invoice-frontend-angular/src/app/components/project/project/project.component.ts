@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { saveAs } from 'file-saver';
 import { User, Employee, Po, Project, ChangeLog } from 'src/app/models/invoice';
 import { AuthService } from 'src/app/services/authentication.service';
-import { PoService } from 'src/app/services/po.service';
+import { PoService } from 'src/app/services/purchaseOrder.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { SnackbarService } from 'src/app/services/showSnackBar';
 
@@ -21,16 +21,16 @@ export class ProjectComponent implements OnInit, AfterContentChecked
   employees: Employee[] = [];
   pos: Po[] = [];
   addProjectRequest: Project = {
-    projectId: 'Name',
+    id: 'Name',
     name: '',
-    desc: '',
-    start_date: new Date(),
-    due_date: new Date(),
+    description: '',
+    startDate: new Date(),
+    dueDate: new Date(),
     poId: '',
     reference: '',
     billable: 0,
     rate: 0,
-    capex_code: '',
+    capexCode: '',
     employeeNames: [],
   };
   po_name = '';
@@ -43,8 +43,8 @@ export class ProjectComponent implements OnInit, AfterContentChecked
     email: '',
     phone: 0,
     amount: 0,
-    start_date: new Date(),
-    due_date: new Date(),
+    startDate: new Date(),
+    dueDate: new Date(),
 };
 result =0;
   user: User[] = [];
@@ -99,7 +99,7 @@ result =0;
     return this.pos.find((item) => item.id === id)?.name;
   }
   getProjectName(id: string) {
-    return this.projects.find((item) => item.projectId === id)?.name;
+    return this.projects.find((item) => item.id === id)?.name;
   }
 
   onSearch(): void {
@@ -136,8 +136,8 @@ result =0;
       };
     
   
-  deleteProject(projectId: string) {
-      this.projectService.deleteProject(projectId)
+  deleteProject(id: string) {
+      this.projectService.deleteProject(id)
       .subscribe({
         next: () => {
           this.router.navigate(['project']);
@@ -192,9 +192,9 @@ getStatus(dueDate: Date): string {
 
 
     for (const project of projectsIncludePO) {
-      const auditIncludeProject = this.logs.filter(item => item.primaryKeyValue === project.projectId);
-      const startDate = new Date(project.start_date);
-      const endDate = new Date(project.due_date);
+      const auditIncludeProject = this.logs.filter(item => item.primaryKeyValue === project.id);
+      const startDate = new Date(project.startDate);
+      const endDate = new Date(project.dueDate);
 
       if (auditIncludeProject.length === 1) 
       {

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PoComponent } from './po.component';
+import { PoComponent } from './purchase-order.component';
 
 describe('PoComponent', () => {
   let component: PoComponent;

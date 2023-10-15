@@ -11,11 +11,11 @@ import { httpOptions, httpOptionBlob } from './httpOptions';
 })
 export class ProjectService {
 
-  private url = "Project";
-  private url_po = "Po";
-  private url_search = "Project/search";
-  private url_employee = "Employee";
-  private url_audit = "ChangeLog";
+  private url = "project";
+  private url_po = "purchase-order";
+  private url_search = "project/search";
+  private url_employee = "employee";
+  private url_audit = "change-log";
   
   constructor(private http: HttpClient) { }
 
@@ -24,20 +24,20 @@ export class ProjectService {
   }
 
   public addProject(addProjectRequest: PostProject): Observable<Project[]> {
-    addProjectRequest.projectId = '00000'
+    addProjectRequest.id = '00000'
     return this.http.post<Project[]>(`${environment.apiUrl}/${this.url}`, addProjectRequest, httpOptions);
    }
 
-  public getProjectId(projectId: string): Observable<PostProject> {
-    return this.http.get<PostProject>(`${environment.apiUrl}/${this.url}` + '/GetName/' + projectId, httpOptions);
+  public getid(id: string): Observable<PostProject> {
+    return this.http.get<PostProject>(`${environment.apiUrl}/${this.url}` + "/" + id, httpOptions);
   }
 
   public updateProject(updateProjectRequest: PostProject): Observable<Project> {
     return this.http.put<Project>(`${environment.apiUrl}/${this.url}`, updateProjectRequest, httpOptions);
   }
 
-  public deleteProject(projectId: string): Observable<Project> {
-    return this.http.delete<Project>(`${environment.apiUrl}/${this.url}` + '/' + projectId + '?id=' + projectId, httpOptions);
+  public deleteProject(id: string): Observable<Project> {
+    return this.http.delete<Project>(`${environment.apiUrl}/${this.url}` + '/' + id, httpOptions);
   }
   public getPo(): Observable<Po[]> {
 
@@ -55,13 +55,13 @@ export class ProjectService {
     return this.http.get<Employee[]>(`${environment.apiUrl}/${this.url_employee}`, httpOptions);
   }
 
-  public getEmployeeByID(employeeId: string): Observable<Employee[]> {
+  public getEmployeeByID(id: string): Observable<Employee[]> {
 
-    return this.http.get<Employee[]>(`${environment.apiUrl}/${this.url_employee}` + '/' + employeeId, httpOptions);
+    return this.http.get<Employee[]>(`${environment.apiUrl}/${this.url_employee}` + id, httpOptions);
   }
 
-  public downloadInvoice(projectId: string): Observable<Blob> {
-    return this.http.get(`${environment.apiUrl}/${this.url}` + '/download/' + projectId, httpOptionBlob )
+  public downloadInvoice(id: string): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/${this.url}` + '/download/' + id, httpOptionBlob )
   }
 
   public exportAllInvoices(): Observable<Blob> {

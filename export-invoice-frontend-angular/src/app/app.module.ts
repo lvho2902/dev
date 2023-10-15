@@ -9,15 +9,15 @@ import { AddEmployeeComponent } from './components/employee/add-employee/add-emp
 import { EditEmployeeComponent } from './components/employee/edit-employee/edit-employee.component';
 import { AddProjectComponent } from './components/project/add-project/add-project.component';
 import { EditProjectComponent } from './components/project/edit-project/edit-project.component';
-import { AddPoComponent } from './components/po/add-po/add-po.component';
-import { EditPoComponent } from './components/po/edit-po/edit-po.component';
+import { AddPoComponent } from './components/purchaseOrder/add-purchase-order/add-purchase-order.component';
+import { EditPoComponent } from './components/purchaseOrder/edit-purchase-order/edit-purchase-order.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatInputModule} from '@angular/material/input';
 import { LoginComponentTokenService } from './Authentication/login-authentication/login-authentication.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { LayoutComponent } from './LayoutComponents/layout/layout.component';
 import { EmployeeComponent } from './components/employee/employee/employee.component';
-import { PoComponent } from './components/po/po/po.component';
+import { PoComponent } from './components/purchaseOrder/purchase-order/purchase-order.component';
 import { ProjectComponent } from './components/project/project/project.component';;
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxPaginationModule } from 'ngx-pagination';
