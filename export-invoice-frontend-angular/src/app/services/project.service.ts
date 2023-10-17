@@ -48,7 +48,6 @@ export class ProjectService {
     const url = (`${environment.apiUrl}/${this.url_search}`+ '/' + poName);
     return this.http.get<Project[]>(url, httpOptions);
   }
-
   
   public getEmployee(): Observable<Employee[]> {
 
@@ -57,7 +56,7 @@ export class ProjectService {
 
   public getEmployeeByID(id: string): Observable<Employee[]> {
 
-    return this.http.get<Employee[]>(`${environment.apiUrl}/${this.url_employee}` + id, httpOptions);
+    return this.http.get<Employee[]>(`${environment.apiUrl}/${this.url_employee}` + '/' + id, httpOptions);
   }
 
   public downloadInvoice(id: string): Observable<Blob> {

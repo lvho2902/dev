@@ -87,7 +87,7 @@ deletePo(id: string) {
     getRemainingOfPO(id: String): number {
       const now = new Date();
 
-      const projectsIncludePO = this.projects.filter(item => item.poId === id);
+      const projectsIncludePO = this.projects.filter(item => item.purchaseOrderId === id);
 
       if (projectsIncludePO.length === 0) {
         const po = this.pos.find(p => p.id === id);
@@ -151,7 +151,7 @@ deletePo(id: string) {
     }
 
     getStatusPO(id: String): number{
-      const projectsIncludePO = this.projects.filter(item => item.poId === id);
+      const projectsIncludePO = this.projects.filter(item => item.purchaseOrderId === id);
       let sum = 0;
       for (const project of projectsIncludePO) {
         sum += project.rate * project.billable

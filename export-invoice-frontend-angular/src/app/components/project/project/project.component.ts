@@ -26,7 +26,7 @@ export class ProjectComponent implements OnInit, AfterContentChecked
     description: '',
     startDate: new Date(),
     dueDate: new Date(),
-    poId: '',
+    purchaseOrderId: '',
     reference: '',
     billable: 0,
     rate: 0,
@@ -178,7 +178,7 @@ getStatus(dueDate: Date): string {
   getRemainingOfPO(id: String): number {
     const now = new Date();
 
-    const projectsIncludePO = this.projects.filter(item => item.poId === id);
+    const projectsIncludePO = this.projects.filter(item => item.purchaseOrderId === id);
 
     if (projectsIncludePO.length === 0) {
       const po = this.pos.find(p => p.id === id);
@@ -242,7 +242,7 @@ getStatus(dueDate: Date): string {
   }
 
   getStatusPO(id: String): number{
-    const projectsIncludePO = this.projects.filter(item => item.poId === id);
+    const projectsIncludePO = this.projects.filter(item => item.purchaseOrderId === id);
     let sum = 0;
     for (const project of projectsIncludePO) {
       sum += project.rate * project.billable

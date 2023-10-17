@@ -22,7 +22,7 @@ export class AddProjectComponent implements OnInit {
     description: '',
     startDate: new Date(),
     dueDate: new Date(),
-    poId: '',
+    purchaseOrderId: '',
     reference: '',
     billable: 0,
     rate: 0,

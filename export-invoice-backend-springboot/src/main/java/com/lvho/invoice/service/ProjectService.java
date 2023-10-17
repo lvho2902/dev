@@ -15,7 +15,6 @@ import com.lvho.invoice.repository.PurchaseOrderRepo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProjectService 
@@ -33,11 +32,33 @@ public class ProjectService
     {
         return projectRepo.findAll();
     }
-    
     public Project get(String id)
     {
-        Optional<Project> optionalEntity = projectRepo.findById(id);
-        return optionalEntity.orElse(null);
+        return projectRepo.findById(id).orElse(null);
+    }
+    public ProjectDto getDetail(String id)
+    {
+        Project project = projectRepo.findById(id).orElse(null);
+        if(project != null) 
+        {
+            ProjectDto dto = new ProjectDto();
+            dto.id = project.id;
+            dto.name = project.name;
+            dto.startDate = project.startDate;
+            dto.dueDate = project.dueDate;
+            dto.rate = project.rate;
+            dto.desciprtion = project.description;
+            dto.capexCode = project.capexCode;
+            dto.billable = project.billable;
+            dto.purchaseOrderId = project.purchaseOrder.id;
+            if(project.employees != null)
+            project.employees.forEach(employee -> {
+                dto.employeeNames.add(employee.name);
+                dto.employeeIds.add(employee.id);
+            });
+            return dto;
+        }
+        return null;
     }
 
     public Project create(ProjectDto dto)
@@ -59,14 +80,12 @@ public class ProjectService
         model.capexCode = dto.capexCode;
         model.rate = dto.rate;
         model.reference = dto.reference;
-        List<Employee> employees = new ArrayList<Employee>();
         dto.employeeIds.forEach(employeeId ->
         {
             Employee employee = employeeRepo.findById(employeeId).orElse(null);
             if(employee == null) throw new CustomParameterConstraintException(Constants.MESSAGE_EMPLOYEE_ID_NOT_EXIST, HttpStatus.BAD_REQUEST);
-            employees.add(employee);
+            model.addEmployee(employee);
         });
-        model.employees = employees;
         model.purchaseOrder = purchaseOrder;
         return projectRepo.save(model);
     }
@@ -97,17 +116,15 @@ public class ProjectService
         project.billable = dto.billable;
         project.rate = dto.rate;
         project.purchaseOrder = purchaseOrderRepo.findById(dto.purchaseOrderId).orElse(null);
-            
         if(dto.employeeIds != null)
         {
-        List<Employee> employees = new ArrayList<Employee>();
-        dto.employeeIds.forEach(employeeId ->
-        {
-            Employee employee = employeeRepo.findById(employeeId).orElse(null);
-            if(employee == null) throw new CustomParameterConstraintException(Constants.MESSAGE_EMPLOYEE_ID_NOT_EXIST, HttpStatus.BAD_REQUEST);
-            employees.add(employee);
-        });
-        project.employees = employees;
+            project.employees = new ArrayList<>();
+            dto.employeeIds.forEach(employeeId ->
+            {
+                Employee employee = employeeRepo.findById(employeeId).orElse(null);
+                if(employee == null) throw new CustomParameterConstraintException(Constants.MESSAGE_EMPLOYEE_ID_NOT_EXIST, HttpStatus.BAD_REQUEST);
+                project.addEmployee(employee);
+            });
         }
         return projectRepo.save(project);
     }

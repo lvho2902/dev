@@ -40,7 +40,13 @@ public class EmployeeService
     {
         Employee model = get(id);
         if(model == null) throw new CustomParameterConstraintException(Constants.MESSAGE_EMPLOYEE_ID_NOT_EXIST, HttpStatus.BAD_REQUEST);
-        model.projects = null;
+
+        // model.projects.forEach(project ->{
+        //     project.employees.remove(model);
+        //     projectRepo.save(project);
+        // });
+
+
         employeeRepo.deleteById(id);
         return model;
     }

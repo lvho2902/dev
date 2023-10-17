@@ -5,6 +5,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PreRemove;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
@@ -86,8 +87,10 @@ public class Project {
         employee.projects.add(this);
     }
 
-    public void removeEmployee(Employee employee) {
-        employees.remove(employee);
-        employee.projects.remove(this);
+    @PreRemove
+    public void removeEmployees() {
+        employees.forEach(employee -> {
+            employee.projects.remove(this);
+        });
     }
 }

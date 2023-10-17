@@ -30,9 +30,9 @@ public class ProjectController
     }
 
     @GetMapping("project/{id}")
-    public Project get(@PathVariable String id)
+    public ProjectDto get(@PathVariable String id)
     {
-        return service.get(id);
+        return service.getDetail(id);
     }
 
     @PostMapping("project")

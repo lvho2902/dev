@@ -52,10 +52,10 @@
           {{project.dueDate}}
 </td>
         <td > 
-          <button type="button" class="btn btn-outline-light text-dark mt-n2 po-btn" data-toggle="modal" data-target="#poModal" (click)="showPoInfo(project.poId)"
+          <button type="button" class="btn btn-outline-light text-dark mt-n2 po-btn" data-toggle="modal" data-target="#poModal" (click)="showPoInfo(project.purchaseOrderId)"
                   [class.bg-running]="getStatus(project.dueDate) === 'Running'"
                   [class.bg-expired]="getStatus(project.dueDate) === 'Expired'">
-                  {{getProjectPoName(project.poId)}}
+                  {{getProjectPoName(project.purchaseOrderId)}}
           </button>
       </td>
 

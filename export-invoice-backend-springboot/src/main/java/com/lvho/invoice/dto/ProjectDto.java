@@ -1,5 +1,6 @@
 package com.lvho.invoice.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -28,7 +29,9 @@ public class ProjectDto {
 
     public String capexCode;
 
-    public List<String> employeeIds;
+    public List<String> employeeIds = new ArrayList<>();
 
-    public String purchaseOrderId; 
+    public String purchaseOrderId;
+
+    public List<String> employeeNames = new ArrayList<>();
 }

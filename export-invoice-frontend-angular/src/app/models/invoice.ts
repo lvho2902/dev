@@ -17,7 +17,7 @@ export interface Project {
     description: string;
     startDate: Date;
     dueDate: Date;
-    poId: string;
+    purchaseOrderId: string;
     reference: string;
     billable: number;
     rate: number;

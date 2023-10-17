@@ -2,6 +2,7 @@ package com.lvho.invoice.entity;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.PreRemove;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
@@ -54,13 +55,10 @@ public class Employee {
     @JsonIgnore
     public List<Project> projects = new ArrayList<Project>();
 
-    public void addProject(Project project) {
-        projects.add(project);
-        project.employees.add(this);
-    }
-
-    public void removeProject(Project project) {
-        projects.remove(project);
-        project.employees.remove(this);
+    @PreRemove
+    public void removeProjects() {
+        projects.forEach(project -> {
+            project.employees.remove(this);
+        });
     }
 }
