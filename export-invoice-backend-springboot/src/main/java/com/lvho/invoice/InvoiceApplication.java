@@ -11,7 +11,7 @@ public class InvoiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(InvoiceApplication.class, args);
-		System.out.println("hello");
+		System.out.println("Invoice");
 	}
 
 	@Bean

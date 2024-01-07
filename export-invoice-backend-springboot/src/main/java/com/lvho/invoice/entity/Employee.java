@@ -1,8 +1,6 @@
 package com.lvho.invoice.entity;
 
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.PreRemove;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
@@ -12,16 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 
 @Entity
 @NoArgsConstructor
@@ -46,19 +36,12 @@ public class Employee {
     @Column()
     public String phone;
 
-    @ManyToMany(fetch = FetchType.EAGER,
-        cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-        },
-        mappedBy = "employees")
-    @JsonIgnore
-    public List<Project> projects = new ArrayList<Project>();
-
-    @PreRemove
-    public void removeProjects() {
-        projects.forEach(project -> {
-            project.employees.remove(this);
-        });
-    }
+//     @ManyToMany(fetch = FetchType.EAGER,
+//         cascade = {
+//             CascadeType.PERSIST,
+//             CascadeType.MERGE
+//         },
+//         mappedBy = "employees")
+//     @JsonIgnore
+//     public List<Project> projects = new ArrayList<Project>();
 }
