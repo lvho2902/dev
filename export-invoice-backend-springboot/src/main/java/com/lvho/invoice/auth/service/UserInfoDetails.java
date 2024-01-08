@@ -1,9 +1,10 @@
-package com.lvho.invoice.service;
+package com.lvho.invoice.auth.service;
 
-import com.lvho.invoice.entity.UserInfo;
 import org.springframework.security.core.GrantedAuthority; 
 import org.springframework.security.core.authority.SimpleGrantedAuthority; 
-import org.springframework.security.core.userdetails.UserDetails; 
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.lvho.invoice.auth.entity.UserInfo;
 
 import java.util.Arrays; 
 import java.util.Collection; 
@@ -17,7 +18,7 @@ public class UserInfoDetails implements UserDetails {
 	private List<GrantedAuthority> authorities; 
 
 	public UserInfoDetails(UserInfo userInfo) { 
-		name = userInfo.getName(); 
+		name = userInfo.getUserName(); 
 		password = userInfo.getPassword(); 
 		authorities = Arrays.stream(userInfo.getRoles().split(",")) 
 				.map(SimpleGrantedAuthority::new) 

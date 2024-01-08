@@ -1,10 +1,9 @@
-package com.lvho.invoice.config;
+package com.lvho.invoice.auth.config;
 
-import com.lvho.invoice.filter.JwtAuthFilter; 
-import com.lvho.invoice.service.UserInfoService; 
 import org.springframework.beans.factory.annotation.Autowired; 
 import org.springframework.context.annotation.Bean; 
-import org.springframework.context.annotation.Configuration; 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager; 
 import org.springframework.security.authentication.AuthenticationProvider; 
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider; 
@@ -17,44 +16,39 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; 
 import org.springframework.security.crypto.password.PasswordEncoder; 
 import org.springframework.security.web.SecurityFilterChain; 
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter; 
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.lvho.invoice.auth.filter.JwtAuthFilter;
+import com.lvho.invoice.auth.service.UserInfoService; 
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig { 
 
+	@Lazy
 	@Autowired
 	private JwtAuthFilter authFilter; 
 
-	// User Creation 
 	@Bean
 	public UserDetailsService userDetailsService() { 
 		return new UserInfoService(); 
 	} 
 
-	// Configuring HttpSecurity 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { 
-		return http.csrf().disable() 
-				.authorizeHttpRequests() 
-				.requestMatchers("/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll() 
-				.and() 
-				.authorizeHttpRequests().requestMatchers("/auth/user/**").authenticated() 
-				.and() 
-				.authorizeHttpRequests().requestMatchers("/auth/admin/**").authenticated() 
-                .and() 
-				.authorizeHttpRequests().requestMatchers("/employee").authenticated() 
-				.and() 
-				.sessionManagement() 
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
-				.and() 
-				.authenticationProvider(authenticationProvider()) 
-				.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class) 
-				.build(); 
+		return http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(requests -> requests.requestMatchers("/token").permitAll())
+				.authorizeHttpRequests(requests -> requests.requestMatchers("/register").permitAll())
+                .authorizeHttpRequests(requests -> requests.requestMatchers("/user/**").authenticated())
+                .authorizeHttpRequests(requests -> requests.requestMatchers("/employee").authenticated())
+                .sessionManagement(management -> management
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+                .build(); 
 	} 
 
-	// Password Encoding 
 	@Bean
 	public static PasswordEncoder passwordEncoder() { 
 		return new BCryptPasswordEncoder(); 

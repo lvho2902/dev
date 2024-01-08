@@ -2,10 +2,10 @@ package com.lvho.invoice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lvho.invoice.custom.Constants;
+import com.lvho.invoice.utils.Constants;
 import com.lvho.invoice.custom.exception.BadRequestException;
 import com.lvho.invoice.entity.Employee;
-import com.lvho.invoice.repository.EmployeeRepo;
+import com.lvho.invoice.repository.EmployeeRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public class EmployeeService 
 {
     @Autowired
-    private EmployeeRepo employeeRepo;
+    private EmployeeRepository employeeRepo;
 
     public List<Employee> getAll()
     {

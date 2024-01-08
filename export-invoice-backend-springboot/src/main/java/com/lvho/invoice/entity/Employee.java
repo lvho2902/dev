@@ -29,7 +29,6 @@ public class Employee {
     @NotBlank
     public String name;
 
-    @Column(name = "email")
     @NotBlank
     public String email;
 
