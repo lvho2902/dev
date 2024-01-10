@@ -1,131 +1,102 @@
-// package com.lvho.invoice.service;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.stereotype.Service;
+package com.lvho.invoice.service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-// import com.lvho.invoice.custom.Constants;
-// import com.lvho.invoice.custom.exception.CustomParameterConstraintException;
-// import com.lvho.invoice.dto.ProjectDto;
-// import com.lvho.invoice.entity.Employee;
-// import com.lvho.invoice.entity.Project;
-// import com.lvho.invoice.entity.PurchaseOrder;
-// import com.lvho.invoice.repository.EmployeeRepo;
-// import com.lvho.invoice.repository.ProjectRepo;
-// import com.lvho.invoice.repository.PurchaseOrderRepo;
+import com.lvho.invoice.custom.exception.BadRequestException;
+import com.lvho.invoice.entity.Employee;
+import com.lvho.invoice.entity.Project;
+import com.lvho.invoice.repository.EmployeeRepository;
+import com.lvho.invoice.repository.ProjectRepository;
+import com.lvho.invoice.utils.Constants;
 
-// import java.util.ArrayList;
-// import java.util.List;
+import java.util.List;
 
-// @Service
-// public class ProjectService 
-// {
-//     @Autowired
-//     private ProjectRepo projectRepo;
+@Service
+public class ProjectService 
+{
+    @Autowired
+    private ProjectRepository projectRepo;
 
-//     @Autowired
-//     private PurchaseOrderRepo purchaseOrderRepo;
+    @Autowired
+    private EmployeeRepository employeeRepo;
 
-//     @Autowired
-//     private EmployeeRepo employeeRepo;
+    public List<Project> getAll()
+    {
+        return projectRepo.findAll();
+    }
+    public Project getById(String id)
+    {
+        return projectRepo.findById(id).orElse(null);
+    }
 
-//     public List<Project> getAll()
-//     {
-//         return projectRepo.findAll();
-//     }
-//     public Project get(String id)
-//     {
-//         return projectRepo.findById(id).orElse(null);
-//     }
-//     public ProjectDto getDetail(String id)
-//     {
-//         Project project = projectRepo.findById(id).orElse(null);
-//         if(project != null) 
-//         {
-//             ProjectDto dto = new ProjectDto();
-//             dto.id = project.id;
-//             dto.name = project.name;
-//             dto.startDate = project.startDate;
-//             dto.dueDate = project.dueDate;
-//             dto.rate = project.rate;
-//             dto.desciprtion = project.description;
-//             dto.capexCode = project.capexCode;
-//             dto.billable = project.billable;
-//             dto.purchaseOrderId = project.purchaseOrder.id;
-//             if(project.employees != null)
-//             project.employees.forEach(employee -> {
-//                 dto.employeeNames.add(employee.name);
-//                 dto.employeeIds.add(employee.id);
-//             });
-//             return dto;
-//         }
-//         return null;
-//     }
+    public Project create(Project project)
+    {
+        if(project.getName() == null || project.getName().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_NAME);
+        if(projectRepo.findByName(project.getName()) != null) throw new BadRequestException(Constants.MESSAGE_SAME_PROJECT_NAME_EXIST);
+        if(project.getStartDate() == null || project.getStartDate().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_START_DATE);
+        if(project.getDueDate() == null || project.getDueDate().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_DUE_DATE);
 
-//     public Project create(ProjectDto dto)
-//     {
+        return projectRepo.save(project);
+    }
 
-//         if(dto.name == null || dto.name.isBlank()) throw new CustomParameterConstraintException(Constants.MESSAGE_INVALID_NAME, HttpStatus.BAD_REQUEST);
-//         if(dto.startDate == null || dto.startDate.isBlank()) throw new CustomParameterConstraintException(Constants.MESSAGE_INVALID_START_DATE, HttpStatus.BAD_REQUEST);
-//         if(dto.dueDate == null || dto.dueDate.isBlank()) throw new CustomParameterConstraintException(Constants.MESSAGE_INVALID_DUE_DATE, HttpStatus.BAD_REQUEST);
-//         if(projectRepo.findByName(dto.name) != null) throw new CustomParameterConstraintException(Constants.MESSAGE_SAME_PROJECT_NAME_EXIST, HttpStatus.BAD_REQUEST);
-//         PurchaseOrder purchaseOrder = purchaseOrderRepo.findById(dto.purchaseOrderId).orElse(null);
-//         if(purchaseOrder == null) throw new CustomParameterConstraintException(Constants.MESSAGE_PURCHASE_ORDER_ID_NOT_EXIST, HttpStatus.BAD_REQUEST);
+    public Project delete(String id)
+    {
+        Project project = getById(id);
+        if(project == null) throw new BadRequestException(Constants.MESSAGE_PROJECT_ID_NOT_EXIST);
+        project.removeThisInAllEmployee();
+        projectRepo.deleteById(id);
+        return project;
+    }
 
-//         Project model = new Project();
-//         model.name = dto.name;
-//         model.description = dto.desciprtion;
-//         model.billable = dto.billable;
-//         model.startDate = dto.startDate;
-//         model.dueDate = dto.dueDate;
-//         model.capexCode = dto.capexCode;
-//         model.rate = dto.rate;
-//         model.reference = dto.reference;
-//         dto.employeeIds.forEach(employeeId ->
-//         {
-//             Employee employee = employeeRepo.findById(employeeId).orElse(null);
-//             if(employee == null) throw new CustomParameterConstraintException(Constants.MESSAGE_EMPLOYEE_ID_NOT_EXIST, HttpStatus.BAD_REQUEST);
-//             model.addEmployee(employee);
-//         });
-//         model.purchaseOrder = purchaseOrder;
-//         return projectRepo.save(model);
-//     }
+    public Project update(Project model){
+        Project project = getById(model.getId());
+        if(project == null) throw new BadRequestException(Constants.MESSAGE_PROJECT_ID_NOT_EXIST);
+        
+        if(model.getName() == null || model.getName().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_NAME);
+        if(!project.getName().equals(model.getName()) && projectRepo.findByName(model.getName()) != null) throw new BadRequestException(Constants.MESSAGE_SAME_PROJECT_NAME_EXIST);
+        if(model.getBillable() < 0) throw new BadRequestException(Constants.MESSAGE_INVALID_BILLABLE);
+        if(model.getCapexCode() == null || model.getCapexCode().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_CAPEX_CODE);
+        if(model.getStartDate() == null || model.getStartDate().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_START_DATE);
+        if(model.getDueDate() == null || model.getDueDate().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_DUE_DATE);
 
-//     public Project delete(String id)
-//     {
-//         Project model = get(id);
-//         if(model == null) throw new CustomParameterConstraintException(Constants.MESSAGE_PROJECT_ID_NOT_EXIST, HttpStatus.BAD_REQUEST);
-//         projectRepo.delete(model);
-//         return model;
-//     }
+        project.setName(model.getName());
+        project.setBillable(model.getBillable());
+        project.setCapexCode(model.getCapexCode());
+        project.setStartDate(model.getStartDate());
+        project.setDueDate(model.getDueDate());
+        project.setDescription(model.getDescription());
+        project.setReference(model.getReference());
+        return projectRepo.save(project);
+    }
 
-//     public Project update(ProjectDto dto) 
-//     {
-//         Project project = get(dto.id);
-//         if(project == null) throw new CustomParameterConstraintException(Constants.MESSAGE_PROJECT_ID_NOT_EXIST, HttpStatus.BAD_REQUEST);
-//         if(dto.name == null || dto.name.isBlank()) throw new CustomParameterConstraintException(Constants.MESSAGE_INVALID_NAME, HttpStatus.BAD_REQUEST);
-//         if(dto.startDate == null || dto.startDate.isBlank()) throw new CustomParameterConstraintException(Constants.MESSAGE_INVALID_START_DATE, HttpStatus.BAD_REQUEST);
-//         if(dto.dueDate == null || dto.dueDate.isBlank()) throw new CustomParameterConstraintException(Constants.MESSAGE_INVALID_DUE_DATE, HttpStatus.BAD_REQUEST);
-//         if(!(project.name.equals(dto.name)) && (projectRepo.findByName(dto.name) != null)) throw new CustomParameterConstraintException(Constants.MESSAGE_SAME_PROJECT_NAME_EXIST, HttpStatus.BAD_REQUEST);
-//         PurchaseOrder purchaseOrder = purchaseOrderRepo.findById(dto.purchaseOrderId).orElse(null);
-//         if(purchaseOrder == null) throw new CustomParameterConstraintException(Constants.MESSAGE_PURCHASE_ORDER_ID_NOT_EXIST, HttpStatus.BAD_REQUEST);
 
-//         project.name = dto.name;
-//         project.description = dto.desciprtion;
-//         project.startDate = dto.startDate;
-//         project.reference = dto.reference;
-//         project.billable = dto.billable;
-//         project.rate = dto.rate;
-//         project.purchaseOrder = purchaseOrderRepo.findById(dto.purchaseOrderId).orElse(null);
-//         if(dto.employeeIds != null)
-//         {
-//             project.employees = new ArrayList<>();
-//             dto.employeeIds.forEach(employeeId ->
-//             {
-//                 Employee employee = employeeRepo.findById(employeeId).orElse(null);
-//                 if(employee == null) throw new CustomParameterConstraintException(Constants.MESSAGE_EMPLOYEE_ID_NOT_EXIST, HttpStatus.BAD_REQUEST);
-//                 project.addEmployee(employee);
-//             });
-//         }
-//         return projectRepo.save(project);
-//     }
-// }
+    public Project addEmployees(String projectId, List<String> employeeIds){
+        Project project = projectRepo.findById(projectId).orElse(null);
+        if(project == null) throw new BadRequestException(Constants.MESSAGE_PROJECT_ID_NOT_EXIST);
+
+        employeeIds.forEach(employeeId ->{
+            Employee employee = employeeRepo.findById(employeeId).orElse(null);
+            if(employee == null) throw new BadRequestException(Constants.MESSAGE_EMPLOYEE_ID_NOT_EXIST);
+            
+            project.addEmployee(employee);
+            employeeRepo.save(employee);
+        });
+
+        return projectRepo.save(project);
+    }
+
+    public Project removeEmployees(String projectId, List<String> employeeIds)
+    {
+        Project project = projectRepo.findById(projectId).orElse(null);
+        if(project == null) throw new BadRequestException(Constants.MESSAGE_PROJECT_ID_NOT_EXIST);
+
+        employeeIds.forEach(employeeId ->{
+            Employee employee = employeeRepo.findById(employeeId).orElse(null);
+            if(employee == null) throw new BadRequestException(Constants.MESSAGE_EMPLOYEE_ID_NOT_EXIST);
+            
+            project.removeEmployee(employee);
+        });
+
+        return projectRepo.save(project);
+    }
+}

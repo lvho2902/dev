@@ -1,4 +1,4 @@
-package com.lvho.invoice.custom.exception;
+package com.lvho.invoice.data.response;
 
 public class ErrorResponse {
     public String message;

@@ -1,15 +1,19 @@
 package com.lvho.invoice.entity;
 
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
@@ -18,29 +22,29 @@ import jakarta.persistence.Entity;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "Employee", uniqueConstraints={@UniqueConstraint(columnNames={"email"})})
+@Table(name = "employees", uniqueConstraints={@UniqueConstraint(columnNames={"email"})})
 public class Employee {
     @Id
     @GeneratedValue(strategy =  GenerationType.UUID)
-    @Column()
-    public String id;
+    private String id;
 
-    @Column()
-    @NotBlank
-    public String name;
+    @Column(name = "name")
+    private String name;
 
-    @NotBlank
-    public String email;
+    @Column(name = "email")
+    private String email;
 
-    @Column()
-    public String phone;
+    @Column(name = "phone")
+    private String phone;
 
-//     @ManyToMany(fetch = FetchType.EAGER,
-//         cascade = {
-//             CascadeType.PERSIST,
-//             CascadeType.MERGE
-//         },
-//         mappedBy = "employees")
-//     @JsonIgnore
-//     public List<Project> projects = new ArrayList<Project>();
+    @ManyToMany(mappedBy = "employees")
+    private List<Project> projects = new ArrayList<>();
+
+    public void removeThisInAllProjects(){
+        if(projects != null){
+            projects.forEach(project ->{
+                project.getEmployees().remove(this);
+            });
+        }
+    }
 }

@@ -1,4 +1,4 @@
-package com.lvho.invoice.auth.dto;
+package com.lvho.invoice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

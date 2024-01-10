@@ -29,30 +29,31 @@ public class EmployeeService
 
     public Employee create(Employee model)
     {
-        if(model.name == null || model.name.isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_NAME);
-        if(model.email == null || model.email.isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_EMAIL);
-        if(employeeRepo.findByEmail(model.email) != null) throw new BadRequestException(Constants.MESSAGE_SAME_EMPLOYEE_EMAIL_EXIST);
+        if(model.getName() == null || model.getName().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_NAME);
+        if(model.getEmail() == null || model.getEmail().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_EMAIL);
+        if(employeeRepo.findByEmail(model.getEmail()) != null) throw new BadRequestException(Constants.MESSAGE_SAME_EMPLOYEE_EMAIL_EXIST);
         return employeeRepo.save(model);
     }
 
     public Employee delete(String id)
     {
-        Employee model = getById(id);
-        if(model == null) throw new BadRequestException(Constants.MESSAGE_EMPLOYEE_ID_NOT_EXIST);
-        employeeRepo.deleteById(id);
-        return model;
-    }
-
-    public Employee update(String id, Employee model) 
-    {
         Employee employee = getById(id);
         if(employee == null) throw new BadRequestException(Constants.MESSAGE_EMPLOYEE_ID_NOT_EXIST);
-        if(model.name == null || model.name.isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_NAME);
-        if(model.email == null || model.email.isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_EMAIL);
-        if(!(employee.email.equals(model.email)) && (employeeRepo.findByEmail(model.email) != null)) throw new BadRequestException(Constants.MESSAGE_SAME_EMPLOYEE_EMAIL_EXIST);
-        employee.name = model.name;
-        employee.email = model.email;
-        employee.phone = model.phone;
+        employee.removeThisInAllProjects();
+        employeeRepo.deleteById(id);
+        return employee;
+    }
+
+    public Employee update(Employee model) 
+    {
+        Employee employee = getById(model.getId());
+        if(employee == null) throw new BadRequestException(Constants.MESSAGE_EMPLOYEE_ID_NOT_EXIST);
+        if(model.getName() == null || model.getName().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_NAME);
+        if(model.getEmail() == null || model.getEmail().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_EMAIL);
+        if(!(employee.getEmail().equals(model.getEmail())) && (employeeRepo.findByEmail(model.getEmail()) != null)) throw new BadRequestException(Constants.MESSAGE_SAME_EMPLOYEE_EMAIL_EXIST);
+        employee.setName(model.getName());
+        employee.setEmail(model.getEmail());
+        employee.setPhone(model.getPhone());
         return employeeRepo.save(employee);
     }
 }

@@ -1,82 +1,92 @@
-// package com.lvho.invoice.entity;
+package com.lvho.invoice.entity;
 
-// import jakarta.persistence.Id;
-// import jakarta.persistence.JoinColumn;
-// import jakarta.persistence.JoinTable;
-// import jakarta.persistence.ManyToMany;
-// import jakarta.persistence.ManyToOne;
-// import jakarta.persistence.Table;
-// import jakarta.persistence.UniqueConstraint;
-// import jakarta.validation.constraints.NotBlank;
-// import lombok.AllArgsConstructor;
-// import lombok.Getter;
-// import lombok.NoArgsConstructor;
-// import lombok.Setter;
-// import jakarta.persistence.GeneratedValue;
-// import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
-// import java.util.ArrayList;
-// import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
-// import org.hibernate.annotations.OnDelete;
-// import org.hibernate.annotations.OnDeleteAction;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 
-// import jakarta.persistence.CascadeType;
-// import jakarta.persistence.Column;
-// import jakarta.persistence.Entity;
-// import jakarta.persistence.FetchType;
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Table(name = "projects", uniqueConstraints={@UniqueConstraint(columnNames={"name"})})
+public class Project {
+    @Id
+    @GeneratedValue(strategy =  GenerationType.UUID)
+    private String id;
 
-// @Entity
-// @NoArgsConstructor
-// @AllArgsConstructor
-// @Getter
-// @Setter
-// @Table(name = "Project", uniqueConstraints={@UniqueConstraint(columnNames={"name"})})
-// public class Project {
-//     @Id
-//     @GeneratedValue(strategy =  GenerationType.UUID)
-//     @Column()
-//     public String id;
+    @Column(name = "name")
+    private String name;
 
-//     @Column()
-//     @NotBlank
-//     public String name;
+    @Column(name = "description")
+    private String description;
 
-//     @Column()
-//     public String description;
+    @Column(name = "start_date")
+    private String startDate;
 
-//     @Column()
-//     @NotBlank
-//     public String startDate;
+    @Column(name = "due_data")
+    @NotBlank
+    private String dueDate;
 
-//     @Column()
-//     @NotBlank
-//     public String dueDate;
+    @Column(name = "reference")
+    private String reference;
 
-//     @Column()
-//     public String reference;
+    @Column(name = "billable")
+    private int billable;
 
-//     @Column()
-//     public int billable;
+    @Column(name = "rate")
+    private int rate;
 
-//     @Column()
-//     public int rate;
+    @Column(name = "capex_code")
+    private String capexCode;
 
-//     @Column()
-//     public String capexCode;
+    @ManyToMany(cascade = {
+        CascadeType.PERSIST,
+        CascadeType.MERGE
+    })
+    @JoinTable(name = "project_employee",
+        joinColumns = @JoinColumn(name = "project_id"),
+        inverseJoinColumns = @JoinColumn(name = "employee_id"))
+    private List<Employee> employees = new ArrayList<>();
 
-//     @ManyToMany(fetch = FetchType.EAGER,
-//         cascade = {
-//             CascadeType.PERSIST,
-//             CascadeType.MERGE
-//       })
-//     @JoinTable(name = "project_employees",
-//         joinColumns = { @JoinColumn(name = "project_id") },
-//         inverseJoinColumns = { @JoinColumn(name = "employee_id") })
-//     public List<Employee> employees = new ArrayList<Employee>();
+    @ManyToOne
+    private PurchaseOrder purchaseOrder;
 
-//     @ManyToOne(fetch = FetchType.EAGER, optional = true)
-//     @JoinColumn(name = "purchase_order_id", nullable = false)
-//     @OnDelete(action = OnDeleteAction.CASCADE)
-//     public PurchaseOrder purchaseOrder;
-// }
+    public void addEmployee(Employee employee){
+        if(!employees.contains(employee)){
+            employees.add(employee);
+            employee.getProjects().add(this);
+        }
+    }
+
+    public void removeEmployee(Employee employee){
+        employees.remove(employee);
+        employee.getProjects().remove(this);
+    }
+
+    public void removeThisInAllEmployee(){
+        if(employees != null){
+            employees.forEach(employee ->{
+                employee.getProjects().remove(this);
+            });
+        }
+    }
+}

@@ -1,4 +1,4 @@
-package com.lvho.invoice.auth.data;
+package com.lvho.invoice.data.response;
 
 import java.util.Date;
 
