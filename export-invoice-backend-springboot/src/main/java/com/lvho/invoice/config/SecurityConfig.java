@@ -1,70 +1,67 @@
-// package com.lvho.invoice.config;
+package com.lvho.invoice.config;
 
-// import org.springframework.beans.factory.annotation.Autowired; 
-// import org.springframework.context.annotation.Bean; 
-// import org.springframework.context.annotation.Configuration;
-// import org.springframework.context.annotation.Lazy;
-// import org.springframework.security.authentication.AuthenticationManager; 
-// import org.springframework.security.authentication.AuthenticationProvider; 
-// import org.springframework.security.authentication.dao.DaoAuthenticationProvider; 
-// import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration; 
-// import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity; 
-// import org.springframework.security.config.annotation.web.builders.HttpSecurity; 
-// import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity; 
-// import org.springframework.security.config.http.SessionCreationPolicy; 
-// import org.springframework.security.core.userdetails.UserDetailsService; 
-// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; 
-// import org.springframework.security.crypto.password.PasswordEncoder; 
-// import org.springframework.security.web.SecurityFilterChain; 
-// import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired; 
+import org.springframework.context.annotation.Bean; 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager; 
+import org.springframework.security.authentication.AuthenticationProvider; 
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider; 
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration; 
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity; 
+import org.springframework.security.config.annotation.web.builders.HttpSecurity; 
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity; 
+import org.springframework.security.config.http.SessionCreationPolicy; 
+import org.springframework.security.core.userdetails.UserDetailsService; 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; 
+import org.springframework.security.crypto.password.PasswordEncoder; 
+import org.springframework.security.web.SecurityFilterChain; 
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-// import com.lvho.invoice.filter.JwtAuthFilter;
-// import com.lvho.invoice.service.UserInfoService; 
+import com.lvho.invoice.security.JwtFilter;
+import com.lvho.invoice.service.UserInfoService; 
 
-// @Configuration
-// @EnableWebSecurity
-// @EnableMethodSecurity
-// public class SecurityConfig { 
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
+public class SecurityConfig { 
 
-// 	@Lazy
-// 	@Autowired
-// 	private JwtAuthFilter authFilter; 
+	@Autowired
+	private JwtFilter jwtFilter; 
 
-// 	@Bean
-// 	public UserDetailsService userDetailsService() { 
-// 		return new UserInfoService(); 
-// 	} 
+	@Bean
+	public UserDetailsService userDetailsService() { 
+		return new UserInfoService(); 
+	} 
 
-// 	@Bean
-// 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { 
-// 		return http.csrf(csrf -> csrf.disable())
-//                 .authorizeHttpRequests(requests -> requests.requestMatchers("/token").permitAll())
-// 				.authorizeHttpRequests(requests -> requests.requestMatchers("/register").permitAll())
-//                 .authorizeHttpRequests(requests -> requests.requestMatchers("/user/**").authenticated())
-//                 .authorizeHttpRequests(requests -> requests.requestMatchers("/employee").permitAll())
-// 				.authorizeHttpRequests(requests -> requests.requestMatchers("/employee/**").permitAll())
-//                 .sessionManagement(management -> management
-//                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                 .authenticationProvider(authenticationProvider())
-//                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-//                 .build(); 
-// 	} 
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { 
+		return http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(requests -> requests.requestMatchers("/login").permitAll())
+				.authorizeHttpRequests(requests -> requests.requestMatchers("/register").permitAll())
+                .authorizeHttpRequests(requests -> requests.requestMatchers("/purchase-order","/project", "/employee").authenticated())
+				.authorizeHttpRequests(requests -> requests.requestMatchers("/purchase-order/**","/project/**", "/employee/**").permitAll())
+                .sessionManagement(management -> management
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .build(); 
+	} 
 
-// 	@Bean
-// 	public static PasswordEncoder passwordEncoder() { 
-// 		return new BCryptPasswordEncoder(); 
-// 	} 
+	@Bean
+	public static PasswordEncoder passwordEncoder() { 
+		return new BCryptPasswordEncoder(); 
+	} 
 
-// 	@Bean
-// 	public AuthenticationProvider authenticationProvider() { 
-// 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(); 
-// 		authenticationProvider.setUserDetailsService(userDetailsService()); 
-// 		authenticationProvider.setPasswordEncoder(passwordEncoder()); 
-// 		return authenticationProvider; 
-// 	} 
+	@Bean
+	public AuthenticationProvider authenticationProvider() { 
+		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(); 
+		authenticationProvider.setUserDetailsService(userDetailsService()); 
+		authenticationProvider.setPasswordEncoder(passwordEncoder()); 
+		return authenticationProvider; 
+	} 
 
-// 	@Bean
-// 	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception { 
-// 		return config.getAuthenticationManager(); 
-// 	}
-// } 
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception { 
+		return config.getAuthenticationManager(); 
+	}
+} 

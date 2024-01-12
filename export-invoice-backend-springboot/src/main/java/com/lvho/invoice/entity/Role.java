@@ -1,34 +1,37 @@
 package com.lvho.invoice.entity;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
 
-@Entity
-@Table(name = "roles")
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+public enum Role implements GrantedAuthority{
 
-    @Column(name = "name")
-    private String name;
+    ROLE_ADMIN, ROLE_MONITORING;
 
-    @ManyToMany(mappedBy = "roles")
-    private List<UserInfo> users = new ArrayList<>();
+    public String getAuthority() {
+      return name();
+    }
+
+    public static boolean isValidRoles(List<String> roles){
+      List<String> validRoleNames = Arrays.stream(Role.values()).map(Role::name).collect(Collectors.toList());
+      for (String role : roles) {
+          if (!validRoleNames.contains(role)) {
+              return false;
+          }
+      }
+
+      return true;
+    }
+    
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.UUID)
+    // private String id;
+
+    // @Column(name = "name")
+    // private String name;
+
+    // @ManyToMany(mappedBy = "roles")
+    // private List<UserInfo> users = new ArrayList<>();
 }

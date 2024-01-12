@@ -12,6 +12,7 @@ public final class Constants {
     public static final String MESSAGE_INVALID_BILLABLE = "billable is invalid.";
     public static final String MESSAGE_INVALID_CAPEX_CODE = "capex code is invalid.";
     public static final String MESSAGE_INVALID_AMOUNT = "capex code is invalid.";
+    public static final String MESSAGE_INVALID_ROLES = "roles is invalid.";
 
     public static final String MESSAGE_USER_NAME_NOT_EXIST = "user name does not exist.";
 

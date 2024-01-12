@@ -2,14 +2,17 @@ package com.lvho.invoice.utils;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.lvho.invoice.data.response.EmployeeResponse;
 import com.lvho.invoice.data.response.ProjectResponse;
 import com.lvho.invoice.data.response.PurchaseOrderResponse;
+import com.lvho.invoice.data.response.UserInfoResponse;
 import com.lvho.invoice.entity.Employee;
 import com.lvho.invoice.entity.Project;
 import com.lvho.invoice.entity.PurchaseOrder;
+import com.lvho.invoice.entity.UserInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -23,6 +26,14 @@ import java.util.stream.Collectors;
 public class Mapper {
     @Autowired
     private ModelMapper mapper;
+
+    public UserDetails convertToUserDetails(UserInfo user){
+        return mapper.map(user, UserDetails.class);
+    }
+
+    public UserInfoResponse convertToUserInfoResponse(UserInfo user){
+        return mapper.map(user, UserInfoResponse.class);
+    }
 
     public EmployeeResponse convertToEmployeeResponse(Employee employee){
         if(employee == null) return null;

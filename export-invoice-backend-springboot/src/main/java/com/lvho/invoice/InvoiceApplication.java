@@ -8,7 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import lombok.RequiredArgsConstructor;
+
 @SpringBootApplication
+@RequiredArgsConstructor
 public class InvoiceApplication {
 
 	public static void main(String[] args) {
