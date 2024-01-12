@@ -98,16 +98,4 @@ public class JwtProvider {
         }
         return null;
     }
-
-
-	// private String createToken(Map<String, Object> claims, String userName) { 
-	// 	ZonedDateTime now = ZonedDateTime.now(ZoneId.of("GMT"));
-    //     ZonedDateTime expirationTime = now.plusMinutes(60);
-	// 	return Jwts.builder() 
-	// 			.setClaims(claims) 
-	// 			.setSubject(userName) 
-	// 			.setIssuedAt(Date.from(now.toInstant())) 
-	// 			.setExpiration(Date.from(expirationTime.toInstant())) 
-	// 			.signWith(getSignKey(), SignatureAlgorithm.HS512).compact(); 
-	// }
 }

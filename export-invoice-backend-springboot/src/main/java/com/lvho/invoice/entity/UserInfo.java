@@ -46,25 +46,9 @@ public class UserInfo {
     public void setRoles(List<String> values){
         List<String> roleNames = values;
         List<Role> roles = roleNames.stream()
-                           .map(Role::valueOf) // Assuming Role is an enum
+                           .map(Role::valueOf)
                            .collect(Collectors.toList());
 
         this.roles = new ArrayList<>(roles);
     }
-
-    // @ManyToMany
-    // @JoinTable(name = "user_role",
-    //     joinColumns = @JoinColumn(name = "user_id"),
-    //     inverseJoinColumns = @JoinColumn(name = "role_id"))
-    // private List<Role> roles = new ArrayList<>();
-
-    // public void addRole(Role role){
-    //     roles.add(role);
-    //     role.getUsers().add(this);
-    // }
-
-    // public void removeRole(Role role){
-    //     roles.remove(role);
-    //     role.getUsers().remove(this);
-    // }
 }

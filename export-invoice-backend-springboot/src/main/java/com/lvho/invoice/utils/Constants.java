@@ -25,4 +25,6 @@ public final class Constants {
 	public static final String MESSAGE_SAME_EMPLOYEE_EMAIL_EXIST = "employee with the same email exists.";
     public static final String MESSAGE_SAME_PURCHASE_ORDER_NAME_EXIST = "purchase order with the same name exists.";
     public static final String MESSAGE_SAME_PROJECT_NAME_EXIST = "project with the same name exists.";
+
+    public static final String MESSAGE_BAD_CREDENTIALS = "bad credentials.";
 }

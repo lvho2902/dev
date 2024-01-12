@@ -26,15 +26,12 @@ public class UserController {
     public ResponseEntity<UserInfoResponse> register(@RequestBody UserInfoRequest userInfoRequest) { 
         return ResponseEntity.status(HttpStatus.OK).body(mapper.convertToUserInfoResponse(service.create(userInfoRequest)));
     }
-  
-//     @GetMapping("/user/profile")
-//     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_SUPERVISOR')")
-//     public String userProfile(Authentication authentication) { 
-//         return authentication.getUsername();
-//     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticateAndGetToken(@RequestBody LoginRequest request) { 
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) { 
         return ResponseEntity.status(HttpStatus.OK).body(service.login(request));
     }
+
+    // @GetMapping("/profile")
+    // public ResponseEntity<UserInfoResponse> getOwnProfile
 }
