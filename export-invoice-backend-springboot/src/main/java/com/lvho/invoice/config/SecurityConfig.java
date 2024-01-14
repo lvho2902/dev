@@ -42,27 +42,27 @@ public class SecurityConfig {
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(requests -> requests.requestMatchers(jwtFilter.getIgnoreCsrfAntMatchers()).permitAll())
 
-				.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.POST, "/register").hasAnyAuthority(Role.SYS_ADMIN.toString()))
+				// .authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.POST, "/register").hasAnyAuthority(Role.SYS_ADMIN.toString()))
 
-				.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.GET, "/employee").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
-				.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.POST, "/employee").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
-				.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.DELETE, "/employee").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
-				.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.PUT, "/employee").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
+				// .authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.GET, "/employee").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
+				// .authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.POST, "/employee").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
+				// .authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.DELETE, "/employee").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
+				// .authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.PUT, "/employee").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
 
-				.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.GET, "/project").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
-				.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.POST, "/project").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
-				.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.DELETE, "/project").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
-				.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.PUT, "/project").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
+				// .authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.GET, "/project").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
+				// .authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.POST, "/project").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
+				// .authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.DELETE, "/project").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
+				// .authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.PUT, "/project").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
 
-				.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.GET, "/purchase-order").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
-				.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.POST, "/purchase-order").hasAnyAuthority(Role.SYS_ADMIN.toString()))
-				.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.DELETE, "/purchase-order").hasAnyAuthority(Role.SYS_ADMIN.toString()))
-				.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.PUT, "/purchase-order").hasAnyAuthority(Role.SYS_ADMIN.toString()))
+				// .authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.GET, "/purchase-order").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
+				// .authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.POST, "/purchase-order").hasAnyAuthority(Role.SYS_ADMIN.toString()))
+				// .authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.DELETE, "/purchase-order").hasAnyAuthority(Role.SYS_ADMIN.toString()))
+				// .authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.PUT, "/purchase-order").hasAnyAuthority(Role.SYS_ADMIN.toString()))
 
-				.authorizeHttpRequests(requests -> requests.requestMatchers("/employee/**").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
-				.authorizeHttpRequests(requests -> requests.requestMatchers("/project/**").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
+				// .authorizeHttpRequests(requests -> requests.requestMatchers("/employee/**").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
+				// .authorizeHttpRequests(requests -> requests.requestMatchers("/project/**").hasAnyAuthority(Role.SYS_ADMIN.toString(), Role.ADMIN.toString()))
 
-				.authorizeHttpRequests(requests -> requests.requestMatchers("/purchase-order/**").hasAnyAuthority(Role.SYS_ADMIN.toString()))
+				// .authorizeHttpRequests(requests -> requests.requestMatchers("/purchase-order/**").hasAnyAuthority(Role.SYS_ADMIN.toString()))
 
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

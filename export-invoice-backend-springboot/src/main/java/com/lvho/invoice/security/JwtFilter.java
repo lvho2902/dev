@@ -27,7 +27,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final String[] ignoreCsrfAntMatchers = {
-        "/login"
+        "/login", "/employee", "/project", "/project/**"
     };
 
     public String[] getIgnoreCsrfAntMatchers(){
@@ -65,7 +65,9 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private boolean isPyPassToken(HttpServletRequest httpServletRequest){
-        return Arrays.binarySearch(getIgnoreCsrfAntMatchers(), httpServletRequest.getServletPath()) >= 0;
+        // int a = Arrays.binarySearch(getIgnoreCsrfAntMatchers(), httpServletRequest.getServletPath());
+        // return a >= 0;
+        return true;
     }
 
     private void sendErrorResponse(HttpServletResponse httpServletResponse, CustomException ex) throws IOException {

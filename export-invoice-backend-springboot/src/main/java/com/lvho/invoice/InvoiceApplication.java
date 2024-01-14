@@ -25,7 +25,7 @@ public class InvoiceApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                // .allowedOrigins("http://localhost:4200")  // Replace with the origin of your frontend application
+                .allowedOrigins("http://localhost:3000/")  // Replace with the origin of your frontend application
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*");
             }
