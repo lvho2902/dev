@@ -2,26 +2,3 @@
     height: 50px;
     background-image: linear-gradient(0, #509bff, #498dfe);
 }
-
-.header__navbar {
-    display: flex;
-    justify-content: space-between;
-}
-
-.header__navbar-list {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.header__navbar-item,
-.header__navbar-link {
-    display: inline-block;
-    font-size: 1.4rem;
-    color: var(--white-color);
-    text-decoration: none;
-    font-weight: 300;
-}
-
-.header__navbar-item--strong {
-    width: 400;
-}
