@@ -68,7 +68,7 @@ public class Project {
     private List<Employee> employees = new ArrayList<>();
 
     @ManyToOne
-    private PurchaseOrder purchaseOrder;
+    private Customer customer;
 
     public void addEmployee(Employee employee){
         if(!employees.contains(employee)){

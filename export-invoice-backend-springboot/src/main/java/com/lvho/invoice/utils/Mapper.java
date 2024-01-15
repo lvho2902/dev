@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.lvho.invoice.data.response.EmployeeResponse;
 import com.lvho.invoice.data.response.ProjectResponse;
-import com.lvho.invoice.data.response.PurchaseOrderResponse;
+import com.lvho.invoice.data.response.CustomerResponse;
 import com.lvho.invoice.data.response.UserInfoResponse;
 import com.lvho.invoice.entity.Employee;
 import com.lvho.invoice.entity.Project;
-import com.lvho.invoice.entity.PurchaseOrder;
+import com.lvho.invoice.entity.Customer;
 import com.lvho.invoice.entity.UserInfo;
 
 import lombok.AllArgsConstructor;
@@ -57,8 +57,8 @@ public class Mapper {
         }).collect(Collectors.toList());
 
         projectResponse.setEmployees(employeeResponses);
-        if(project.getPurchaseOrder() != null) projectResponse.setPurchaseOrder(project.getPurchaseOrder().getName());
-        else projectResponse.setPurchaseOrder(null);
+        if(project.getCustomer() != null) projectResponse.setCustomer(project.getCustomer().getName());
+        else projectResponse.setCustomer(null);
         return projectResponse;
     }
 
@@ -68,20 +68,20 @@ public class Mapper {
         }).collect(Collectors.toList());
     }
 
-    public PurchaseOrderResponse convertToPurchaseOrderResponse(PurchaseOrder purchaseOrder){
-        PurchaseOrderResponse purchaseOrderResponse = mapper.map(purchaseOrder, PurchaseOrderResponse.class);
+    public CustomerResponse convertToCustomerResponse(Customer customer){
+        CustomerResponse customerResponse = mapper.map(customer, CustomerResponse.class);
 
-        List<ProjectResponse> projectResponses = purchaseOrder.getProjects().stream().map(project ->{
+        List<ProjectResponse> projectResponses = customer.getProjects().stream().map(project ->{
             return convertToProjectResponse(project);
         }).collect(Collectors.toList());
 
-        purchaseOrderResponse.setProjects(projectResponses);
-        return purchaseOrderResponse;
+        customerResponse.setProjects(projectResponses);
+        return customerResponse;
     }
 
-    public List<PurchaseOrderResponse> convertToPurchaseOrderResponse(List<PurchaseOrder> purchaseOrders){
-        return purchaseOrders.stream().map(purchaseOrder ->{
-            return convertToPurchaseOrderResponse(purchaseOrder);
+    public List<CustomerResponse> convertToCustomerResponse(List<Customer> customers){
+        return customers.stream().map(customer ->{
+            return convertToCustomerResponse(customer);
         }).collect(Collectors.toList());
     }
 }

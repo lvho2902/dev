@@ -10,7 +10,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class PurchaseOrderResponse {
+public class CustomerResponse {
 
     private String id;
 
@@ -22,9 +22,7 @@ public class PurchaseOrderResponse {
 
     private String amount;
 
-    private String startDate;
-
-    private String dueDate;
+    private String address;
 
     private List<ProjectResponse> projects = new ArrayList<>();
 }

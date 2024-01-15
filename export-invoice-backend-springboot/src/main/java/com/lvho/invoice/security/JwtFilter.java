@@ -1,7 +1,6 @@
 package com.lvho.invoice.security;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +26,8 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final String[] ignoreCsrfAntMatchers = {
-        "/login", "/employee", "/project", "/project/**"
+        "/login", "/employee", "/project", "/customer",
+        "/employee/**", "/project/**", "/customer/**" 
     };
 
     public String[] getIgnoreCsrfAntMatchers(){

@@ -22,8 +22,8 @@ import jakarta.persistence.Entity;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "purchase_orders", uniqueConstraints={@UniqueConstraint(columnNames={"name"})})
-public class PurchaseOrder {
+@Table(name = "customers", uniqueConstraints={@UniqueConstraint(columnNames={"name"})})
+public class Customer {
     @Id
     @GeneratedValue(strategy =  GenerationType.UUID)
     private String id;
@@ -37,32 +37,29 @@ public class PurchaseOrder {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "address")
+    private String address;
+
     @Column(name = "amount")
     private int amount;
 
-    @Column(name = "start_date")
-    private String startDate;
-
-    @Column(name = "due_date")
-    private String dueDate;
-
-    @OneToMany(mappedBy = "purchaseOrder")
+    @OneToMany(mappedBy = "customer")
     private List<Project> projects = new ArrayList<>();
 
     public void addProject(Project project){
         projects.add(project);
-        project.setPurchaseOrder(this);
+        project.setCustomer(this);
     }
 
     public void removeProject(Project project){
         projects.remove(project);
-        project.setPurchaseOrder(null);
+        project.setCustomer(null);
     }
 
     public void removeThisInAllProject(){
         if(projects != null){
             projects.forEach(project -> {
-                project.setPurchaseOrder(null);
+                project.setCustomer(null);
             });
         }
     }
