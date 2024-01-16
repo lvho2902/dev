@@ -32,9 +32,9 @@ public class CustomerController
     }
 
     @GetMapping("customer/{id}")
-    public Customer get(@PathVariable String id)
+    public CustomerResponse get(@PathVariable String id)
     {
-        return service.getById(id);
+        return mapper.convertToCustomerResponse(service.getById(id));
     }
 
     @PostMapping("customer")
@@ -56,16 +56,4 @@ public class CustomerController
         Customer updatedCustomer = service.update(customer);
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.convertToCustomerResponse(updatedCustomer));
     }
-
-    // @PostMapping("customer/add-project")
-    // public ResponseEntity<CustomerResponse> addProjects(@RequestBody CustomerProjectRequest entity) {
-    //     CustomerResponse customerResponse = mapper.convertToCustomerResponse(service.addProjects(entity.customerId, entity.projectIds));
-    //     return ResponseEntity.status(HttpStatus.CREATED).body(customerResponse);
-    // }
-
-    // @PostMapping("customer/remove-project")
-    // public ResponseEntity<CustomerResponse> removeProjects(@RequestBody CustomerProjectRequest entity) {
-    //     CustomerResponse customerResponse = mapper.convertToCustomerResponse(service.removeProjects(entity.customerId, entity.projectIds));
-    //     return ResponseEntity.status(HttpStatus.CREATED).body(customerResponse);
-    // }
 }

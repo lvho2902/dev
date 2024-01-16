@@ -1,5 +1,7 @@
 package com.lvho.invoice.data.response;
 
+import java.util.List;
+import java.util.ArrayList;
 
 import lombok.Data;
 import lombok.Getter;
@@ -22,5 +24,5 @@ public class CustomerResponse {
 
     private String address;
 
-    // private List<InvoiceResponse> invoices = new ArrayList<>();
+    private List<String> invoices = new ArrayList<>();
 }

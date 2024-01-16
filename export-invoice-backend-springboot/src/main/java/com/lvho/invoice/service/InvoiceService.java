@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lvho.invoice.custom.exception.BadRequestException;
+import com.lvho.invoice.entity.Customer;
 import com.lvho.invoice.entity.Invoice;
 import com.lvho.invoice.entity.Project;
+import com.lvho.invoice.repository.CustomerRepository;
 import com.lvho.invoice.repository.InvoiceRepository;
+import com.lvho.invoice.repository.ProjectRepository;
 import com.lvho.invoice.utils.Constants;
 
 @Service
@@ -16,10 +19,10 @@ public class InvoiceService {
     @Autowired
     private InvoiceRepository invoiceRepo;
 
+    @Autowired
+    private CustomerRepository customerRepo;
 
-//     @Autowired
-//     private ProjectRepository projectRepo;
-
+    @Autowired ProjectRepository projectRepo;
 
     public List<Invoice> getAll()
     {
@@ -40,53 +43,74 @@ public class InvoiceService {
         return invoiceRepo.save(invoice);
     }
 
-//     public Invoice delete(String id)
-//     {
-//         Invoice invoice = getById(id);
-//         if(invoice == null) throw new BadRequestException(Constants.MESSAGE_INVOICE_ID_NOT_EXIST);
-//         invoiceRepo.deleteById(id);
+    public Invoice delete(String id)
+    {
+        Invoice invoice = getById(id);
+        if(invoice == null) throw new BadRequestException(Constants.MESSAGE_INVOICE_ID_NOT_EXIST);
+        invoiceRepo.deleteById(id);
 
-//         return invoice;
-//     }
+        return invoice;
+    }
 
-//     public Invoice update(Invoice model){
-//         Invoice invoice = getById(model.getId());
-//         if(invoice == null) throw new BadRequestException(Constants.MESSAGE_INVOICE_ID_NOT_EXIST);
+    public Invoice update(Invoice model){
+        Invoice invoice = getById(model.getNumber());
+        if(invoice == null) throw new BadRequestException(Constants.MESSAGE_INVOICE_ID_NOT_EXIST);
         
-//         if(model.getStartDate() == null || model.getStartDate().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_START_DATE);
-//         if(model.getDueDate() == null || model.getDueDate().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_DUE_DATE);
+        if(model.getStartDate() == null || model.getStartDate().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_START_DATE);
+        if(model.getDueDate() == null || model.getDueDate().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_DUE_DATE);
 
-//         invoice.setStartDate(model.getStartDate());
-//         invoice.setDueDate(model.getDueDate());
+        invoice.setStartDate(model.getStartDate());
+        invoice.setDueDate(model.getDueDate());
 
-//         return invoiceRepo.save(invoice);
-//     }
+        return invoiceRepo.save(invoice);
+    }
 
-//      public Invoice addProjects(String invoiceId, List<String> projectIds){
-//         Invoice invoice = invoiceRepo.findById(invoiceId).orElse(null);
-//         if(invoice == null) throw new BadRequestException(Constants.MESSAGE_INVOICE_ID_NOT_EXIST);
+    public Invoice setCustomer(String invoiceNumber, String customerId){
+        Invoice invoice = invoiceRepo.findById(invoiceNumber).orElse(null);
+        if(invoice == null) throw new BadRequestException(Constants.MESSAGE_INVOICE_ID_NOT_EXIST);
 
-//         projectIds.forEach(projectId ->{
-//             Project project = projectRepo.findById(projectId).orElse(null);
-//             if(project == null) throw new BadRequestException(Constants.MESSAGE_PROJECT_ID_NOT_EXIST);
+        Customer customer = customerRepo.findById(customerId).orElse(null);
+        if(customer == null) throw new BadRequestException(Constants.MESSAGE_CUSTOMER_ID_NOT_EXIST);
+        
+        invoice.setCustomer(customer);
+
+        return invoiceRepo.save(invoice);
+    }
+
+    public Invoice removeCustomer(String invoiceNumber){
+        Invoice invoice = invoiceRepo.findById(invoiceNumber).orElse(null);
+        if(invoice == null) throw new BadRequestException(Constants.MESSAGE_INVOICE_ID_NOT_EXIST);
+
+        invoice.setCustomer(null);
+
+        return invoiceRepo.save(invoice);
+    }
+
+     public Invoice addProjects(String invoiceId, List<String> projectIds){
+        Invoice invoice = invoiceRepo.findById(invoiceId).orElse(null);
+        if(invoice == null) throw new BadRequestException(Constants.MESSAGE_INVOICE_ID_NOT_EXIST);
+
+        projectIds.forEach(projectId ->{
+            Project project = projectRepo.findById(projectId).orElse(null);
+            if(project == null) throw new BadRequestException(Constants.MESSAGE_PROJECT_ID_NOT_EXIST);
             
-//             invoice.addProject(project);
-//         });
+            invoice.addProject(project);
+        });
 
-//         return invoiceRepo.save(invoice);
-//     }
+        return invoiceRepo.save(invoice);
+    }
     
-//     public Invoice removeProjects(String invoiceId, List<String> projectIds){
-//         Invoice invoice = invoiceRepo.findById(invoiceId).orElse(null);
-//         if(invoice == null) throw new BadRequestException(Constants.MESSAGE_INVOICE_ID_NOT_EXIST);
+    public Invoice removeProjects(String invoiceId, List<String> projectIds){
+        Invoice invoice = invoiceRepo.findById(invoiceId).orElse(null);
+        if(invoice == null) throw new BadRequestException(Constants.MESSAGE_INVOICE_ID_NOT_EXIST);
 
-//         projectIds.forEach(projectId ->{
-//             Project project = projectRepo.findById(projectId).orElse(null);
-//             if(project == null) throw new BadRequestException(Constants.MESSAGE_PROJECT_ID_NOT_EXIST);
+        projectIds.forEach(projectId ->{
+            Project project = projectRepo.findById(projectId).orElse(null);
+            if(project == null) throw new BadRequestException(Constants.MESSAGE_PROJECT_ID_NOT_EXIST);
             
-//             invoice.removeProject(project);
-//         });
+            invoice.removeProject(project);
+        });
 
-//         return invoiceRepo.save(invoice);
-//     }
+        return invoiceRepo.save(invoice);
+    }
 }

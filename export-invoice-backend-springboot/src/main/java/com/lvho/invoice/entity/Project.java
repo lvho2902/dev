@@ -4,6 +4,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
@@ -66,26 +67,26 @@ public class Project {
         inverseJoinColumns = @JoinColumn(name = "employee_id"))
     private List<Employee> employees = new ArrayList<>();
 
-    // @ManyToOne
-    // private Invoice invoice;
+    @ManyToOne
+    private Invoice invoice;
 
     public void addEmployee(Employee employee){
-        if(!employees.contains(employee)){
-            employees.add(employee);
-            employee.getProjects().add(this);
-        }
+        if(employees.contains(employee)) return;
+        employees.add(employee);
+        employee.getProjects().add(this);
+        
     }
 
     public void removeEmployee(Employee employee){
+        if(employees == null) return;
         employees.remove(employee);
         employee.getProjects().remove(this);
     }
 
     public void removeThisInAllEmployee(){
-        if(employees != null){
-            employees.forEach(employee ->{
-                employee.getProjects().remove(this);
-            });
-        }
+        if(employees == null) return;
+        employees.forEach(employee -> {
+            employee.getProjects().remove(this);
+        });
     }
 }

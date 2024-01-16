@@ -52,15 +52,15 @@ public class Mapper {
     }
 
     public ProjectResponse convertToProjectResponse(Project project){
+        if(project == null) return null;
         ProjectResponse projectResponse = mapper.map(project, ProjectResponse.class);
-        
         List<EmployeeResponse> employeeResponses = project.getEmployees().stream().map(employee -> {
             return convertToEmployeeResponse(employee);
         }).collect(Collectors.toList());
-
         projectResponse.setEmployees(employeeResponses);
-        // if(project.getInvoice() != null) projectResponse.setInvoice((project.getInvoice().getNumber()));
-        // else projectResponse.setInvoice(null);
+        if(project.getInvoice() != null) projectResponse.setInvoice((project.getInvoice().getNumber()));
+        else projectResponse.setInvoice(null);
+
         return projectResponse;
     }
 
@@ -71,13 +71,13 @@ public class Mapper {
     }
 
     public CustomerResponse convertToCustomerResponse(Customer customer){
+        if(customer == null) return null;
         CustomerResponse customerResponse = mapper.map(customer, CustomerResponse.class);
+        List<String> invoices = customer.getInvoices().stream().map(invoice ->{
+            return invoice.getNumber();
+        }).collect(Collectors.toList());
+        customerResponse.setInvoices(invoices);
 
-        // List<InvoiceResponse> invoiceResponses = customer.getInvoices().stream().map(invoice ->{
-        //     return convertToProjectResponse(invoice);
-        // }).collect(Collectors.toList());
-
-        // customerResponse.setProjects(projectResponses);
         return customerResponse;
     }
 
@@ -88,9 +88,11 @@ public class Mapper {
     }
 
     public InvoiceResponse convertToInvoiceResponse(Invoice invoice){
+        if(invoice == null) return null;
         InvoiceResponse invoiceResponse = mapper.map(invoice, InvoiceResponse.class);
-        // if(invoice.getCustomer() != null) invoiceResponse.setCustomer(invoice.getCustomer().getName());
-        // else invoiceResponse.setCustomer(null);
+        invoiceResponse.setCustomer(convertToCustomerResponse(invoice.getCustomer()));
+        invoiceResponse.setProjects(convertToProjectResponse(invoice.getProjects()));
+
         return invoiceResponse; 
     }
 

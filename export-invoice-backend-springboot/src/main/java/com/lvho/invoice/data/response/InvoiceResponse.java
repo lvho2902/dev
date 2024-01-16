@@ -1,9 +1,6 @@
 package com.lvho.invoice.data.response;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import com.lvho.invoice.entity.Customer;
 
 import lombok.Data;
 import lombok.Getter;
@@ -22,7 +19,7 @@ public class InvoiceResponse {
 
     private int total;
 
-    private String customer;
+    private CustomerResponse customer;
 
-    // private List<String> projects = new ArrayList<>();
+    private List<ProjectResponse> projects;
 }
