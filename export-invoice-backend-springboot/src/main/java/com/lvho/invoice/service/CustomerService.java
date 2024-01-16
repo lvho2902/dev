@@ -3,9 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lvho.invoice.custom.exception.BadRequestException;
-import com.lvho.invoice.entity.Project;
 import com.lvho.invoice.entity.Customer;
-import com.lvho.invoice.repository.ProjectRepository;
 import com.lvho.invoice.repository.CustomerRepository;
 import com.lvho.invoice.utils.Constants;
 
@@ -17,9 +15,6 @@ public class CustomerService
 {
     @Autowired
     private CustomerRepository customerRepo;
-
-    @Autowired
-    private ProjectRepository projectRepo;
 
     public List<Customer> getAll()
     {
@@ -48,7 +43,6 @@ public class CustomerService
     {
         Customer customer = getById(id);
         if(customer == null) throw new BadRequestException(Constants.MESSAGE_CUSTOMER_ID_NOT_EXIST);
-        customer.removeThisInAllProject();
         customerRepo.deleteById(id);
         return customer;
     }
@@ -71,34 +65,6 @@ public class CustomerService
         customer.setPhone(model.getPhone());
         customer.setAmount(model.getAmount());
         customer.setAddress(model.getAddress());
-        return customerRepo.save(customer);
-    }
-
-    public Customer addProjects(String customerId, List<String> projectIds){
-        Customer customer = customerRepo.findById(customerId).orElse(null);
-        if(customer == null) throw new BadRequestException(Constants.MESSAGE_CUSTOMER_ID_NOT_EXIST);
-
-        projectIds.forEach(projectId ->{
-            Project project = projectRepo.findById(projectId).orElse(null);
-            if(project == null) throw new BadRequestException(Constants.MESSAGE_PROJECT_ID_NOT_EXIST);
-            
-            customer.addProject(project);
-        });
-
-        return customerRepo.save(customer);
-    }
-    
-    public Customer removeProjects(String customerId, List<String> projectIds){
-        Customer customer = customerRepo.findById(customerId).orElse(null);
-        if(customer == null) throw new BadRequestException(Constants.MESSAGE_CUSTOMER_ID_NOT_EXIST);
-
-        projectIds.forEach(projectId ->{
-            Project project = projectRepo.findById(projectId).orElse(null);
-            if(project == null) throw new BadRequestException(Constants.MESSAGE_PROJECT_ID_NOT_EXIST);
-            
-            customer.removeProject(project);
-        });
-
         return customerRepo.save(customer);
     }
 }

@@ -31,5 +31,5 @@ public class ProjectResponse {
 
     private List<EmployeeResponse> employees = new ArrayList<>();
 
-    private String customer;
+    // private String invoice;
 }

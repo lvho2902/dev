@@ -1,7 +1,6 @@
 package com.lvho.invoice.entity;
 
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -11,8 +10,6 @@ import lombok.Setter;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,24 +40,6 @@ public class Customer {
     @Column(name = "amount")
     private int amount;
 
-    @OneToMany(mappedBy = "customer")
-    private List<Project> projects = new ArrayList<>();
-
-    public void addProject(Project project){
-        projects.add(project);
-        project.setCustomer(this);
-    }
-
-    public void removeProject(Project project){
-        projects.remove(project);
-        project.setCustomer(null);
-    }
-
-    public void removeThisInAllProject(){
-        if(projects != null){
-            projects.forEach(project -> {
-                project.setCustomer(null);
-            });
-        }
-    }
+    // @OneToMany(mappedBy = "customer")
+    // private List<Invoice> invoices = new ArrayList<>();
 }

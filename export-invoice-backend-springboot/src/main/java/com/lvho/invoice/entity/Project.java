@@ -4,7 +4,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
@@ -67,8 +66,8 @@ public class Project {
         inverseJoinColumns = @JoinColumn(name = "employee_id"))
     private List<Employee> employees = new ArrayList<>();
 
-    @ManyToOne
-    private Customer customer;
+    // @ManyToOne
+    // private Invoice invoice;
 
     public void addEmployee(Employee employee){
         if(!employees.contains(employee)){

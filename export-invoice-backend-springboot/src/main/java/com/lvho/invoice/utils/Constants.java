@@ -21,6 +21,7 @@ public final class Constants {
 	public static final String MESSAGE_EMPLOYEE_ID_NOT_EXIST = "employee id does not exist.";
     public static final String MESSAGE_PROJECT_ID_NOT_EXIST = "project id does not exist.";
     public static final String MESSAGE_CUSTOMER_ID_NOT_EXIST = "customer id does not exist.";
+    public static final String MESSAGE_INVOICE_ID_NOT_EXIST = "invoice id does not exist.";
 
     public static final String MESSAGE_SAME_USER_NAME_EXIST = "user with the same user name exists.";
     public static final String MESSAGE_SAME_USER_EMAIL_EXIST = "user with the same email exists.";

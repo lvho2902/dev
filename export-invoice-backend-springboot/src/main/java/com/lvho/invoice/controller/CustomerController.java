@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lvho.invoice.data.request.CustomerProjectRequest;
 import com.lvho.invoice.data.response.CustomerResponse;
 import com.lvho.invoice.entity.Customer;
 import com.lvho.invoice.service.CustomerService;
@@ -58,15 +57,15 @@ public class CustomerController
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.convertToCustomerResponse(updatedCustomer));
     }
 
-    @PostMapping("customer/add-project")
-    public ResponseEntity<CustomerResponse> addProjects(@RequestBody CustomerProjectRequest entity) {
-        CustomerResponse customerResponse = mapper.convertToCustomerResponse(service.addProjects(entity.customerId, entity.projectIds));
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerResponse);
-    }
+    // @PostMapping("customer/add-project")
+    // public ResponseEntity<CustomerResponse> addProjects(@RequestBody CustomerProjectRequest entity) {
+    //     CustomerResponse customerResponse = mapper.convertToCustomerResponse(service.addProjects(entity.customerId, entity.projectIds));
+    //     return ResponseEntity.status(HttpStatus.CREATED).body(customerResponse);
+    // }
 
-    @PostMapping("customer/remove-project")
-    public ResponseEntity<CustomerResponse> removeProjects(@RequestBody CustomerProjectRequest entity) {
-        CustomerResponse customerResponse = mapper.convertToCustomerResponse(service.removeProjects(entity.customerId, entity.projectIds));
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerResponse);
-    }
+    // @PostMapping("customer/remove-project")
+    // public ResponseEntity<CustomerResponse> removeProjects(@RequestBody CustomerProjectRequest entity) {
+    //     CustomerResponse customerResponse = mapper.convertToCustomerResponse(service.removeProjects(entity.customerId, entity.projectIds));
+    //     return ResponseEntity.status(HttpStatus.CREATED).body(customerResponse);
+    // }
 }

@@ -57,8 +57,8 @@ public class Mapper {
         }).collect(Collectors.toList());
 
         projectResponse.setEmployees(employeeResponses);
-        if(project.getCustomer() != null) projectResponse.setCustomer(project.getCustomer().getName());
-        else projectResponse.setCustomer(null);
+        // if(project.getInvoice() != null) projectResponse.setInvoice((project.getInvoice().getNumber()));
+        // else projectResponse.setInvoice(null);
         return projectResponse;
     }
 
@@ -71,11 +71,11 @@ public class Mapper {
     public CustomerResponse convertToCustomerResponse(Customer customer){
         CustomerResponse customerResponse = mapper.map(customer, CustomerResponse.class);
 
-        List<ProjectResponse> projectResponses = customer.getProjects().stream().map(project ->{
-            return convertToProjectResponse(project);
-        }).collect(Collectors.toList());
+        // List<InvoiceResponse> invoiceResponses = customer.getInvoices().stream().map(invoice ->{
+        //     return convertToProjectResponse(invoice);
+        // }).collect(Collectors.toList());
 
-        customerResponse.setProjects(projectResponses);
+        // customerResponse.setProjects(projectResponses);
         return customerResponse;
     }
 
