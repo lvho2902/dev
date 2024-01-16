@@ -24,14 +24,4 @@ public enum Role implements GrantedAuthority{
 
       return true;
     }
-    
-    // @Id
-    // @GeneratedValue(strategy = GenerationType.UUID)
-    // private String id;
-
-    // @Column(name = "name")
-    // private String name;
-
-    // @ManyToMany(mappedBy = "roles")
-    // private List<UserInfo> users = new ArrayList<>();
 }

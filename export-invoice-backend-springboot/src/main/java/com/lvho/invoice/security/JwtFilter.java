@@ -65,8 +65,7 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private boolean isPyPassToken(HttpServletRequest httpServletRequest){
-        // int a = Arrays.binarySearch(getIgnoreCsrfAntMatchers(), httpServletRequest.getServletPath());
-        // return a >= 0;
+        // return Arrays.binarySearch(getIgnoreCsrfAntMatchers(), httpServletRequest.getServletPath()) >= 0;
         return true;
     }
 

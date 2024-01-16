@@ -49,9 +49,6 @@ public class UserInfoService implements UserDetailsService {
 	@Autowired
 	private PasswordEncoder encoder;
 
-    // @Autowired
-    // private Mapper mapper;
-
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { 
 		UserInfo user = userRepo.findByUsername(username);
