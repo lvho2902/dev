@@ -6,10 +6,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.lvho.invoice.data.response.EmployeeResponse;
+import com.lvho.invoice.data.response.InvoiceResponse;
 import com.lvho.invoice.data.response.ProjectResponse;
 import com.lvho.invoice.data.response.CustomerResponse;
 import com.lvho.invoice.data.response.UserInfoResponse;
 import com.lvho.invoice.entity.Employee;
+import com.lvho.invoice.entity.Invoice;
 import com.lvho.invoice.entity.Project;
 import com.lvho.invoice.entity.Customer;
 import com.lvho.invoice.entity.UserInfo;
@@ -82,6 +84,19 @@ public class Mapper {
     public List<CustomerResponse> convertToCustomerResponse(List<Customer> customers){
         return customers.stream().map(customer ->{
             return convertToCustomerResponse(customer);
+        }).collect(Collectors.toList());
+    }
+
+    public InvoiceResponse convertToInvoiceResponse(Invoice invoice){
+        InvoiceResponse invoiceResponse = mapper.map(invoice, InvoiceResponse.class);
+        // if(invoice.getCustomer() != null) invoiceResponse.setCustomer(invoice.getCustomer().getName());
+        // else invoiceResponse.setCustomer(null);
+        return invoiceResponse; 
+    }
+
+    public List<InvoiceResponse> convertToInvoiceResponse(List<Invoice> invoices){
+        return invoices.stream().map(invoice -> {
+            return convertToInvoiceResponse(invoice);
         }).collect(Collectors.toList());
     }
 }

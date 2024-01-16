@@ -1,42 +1,44 @@
-// package com.lvho.invoice.service;
+package com.lvho.invoice.service;
 
-// import java.util.List;
+import java.util.List;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-// import com.lvho.invoice.custom.exception.BadRequestException;
-// import com.lvho.invoice.entity.Invoice;
-// import com.lvho.invoice.entity.Project;
-// import com.lvho.invoice.repository.InvoiceRepository;
-// import com.lvho.invoice.repository.ProjectRepository;
-// import com.lvho.invoice.utils.Constants;
+import com.lvho.invoice.custom.exception.BadRequestException;
+import com.lvho.invoice.entity.Invoice;
+import com.lvho.invoice.entity.Project;
+import com.lvho.invoice.repository.InvoiceRepository;
+import com.lvho.invoice.utils.Constants;
 
-// @Service
-// public class InvoiceService {
-//     @Autowired
-//     private InvoiceRepository invoiceRepo;
+@Service
+public class InvoiceService {
+    @Autowired
+    private InvoiceRepository invoiceRepo;
+
 
 //     @Autowired
 //     private ProjectRepository projectRepo;
 
 
-//     public List<Invoice> getAll()
-//     {
-//         return invoiceRepo.findAll();
-//     }
-//     public Invoice getById(String id)
-//     {
-//         return invoiceRepo.findById(id).orElse(null);
-//     }
+    public List<Invoice> getAll()
+    {
+        return invoiceRepo.findAll();
+    }
+    public Invoice getById(String id)
+    {
+        return invoiceRepo.findById(id).orElse(null);
+    }
 
-//     public Invoice create(Invoice invoice)
-//     {
-//         if(invoice.getStartDate() == null || invoice.getStartDate().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_START_DATE);
-//         if(invoice.getDueDate() == null || invoice.getDueDate().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_DUE_DATE);
+    public Invoice create(Invoice invoice)
+    {
+        if(invoice.getStartDate() == null || invoice.getStartDate().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_START_DATE);
+        if(invoice.getDueDate() == null || invoice.getDueDate().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_DUE_DATE);
+
+        invoice.setTotal(0);
         
-//         return invoiceRepo.save(invoice);
-//     }
+        return invoiceRepo.save(invoice);
+    }
 
 //     public Invoice delete(String id)
 //     {
@@ -87,4 +89,4 @@
 
 //         return invoiceRepo.save(invoice);
 //     }
-// }
+}
