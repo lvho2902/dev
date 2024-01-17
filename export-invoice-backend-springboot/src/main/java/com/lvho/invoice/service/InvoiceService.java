@@ -39,6 +39,7 @@ public class InvoiceService {
         if(invoice.getDueDate() == null || invoice.getDueDate().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_DUE_DATE);
 
         invoice.setTotal(0);
+        invoice.generateRandomInvoiceNumber(10);
         
         return invoiceRepo.save(invoice);
     }
@@ -53,7 +54,7 @@ public class InvoiceService {
     }
 
     public Invoice update(Invoice model){
-        Invoice invoice = getById(model.getNumber());
+        Invoice invoice = getById(model.getId());
         if(invoice == null) throw new BadRequestException(Constants.MESSAGE_INVOICE_ID_NOT_EXIST);
         
         if(model.getStartDate() == null || model.getStartDate().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_START_DATE);
@@ -65,8 +66,8 @@ public class InvoiceService {
         return invoiceRepo.save(invoice);
     }
 
-    public Invoice setCustomer(String invoiceNumber, String customerId){
-        Invoice invoice = invoiceRepo.findById(invoiceNumber).orElse(null);
+    public Invoice setCustomer(String invoiceId, String customerId){
+        Invoice invoice = invoiceRepo.findById(invoiceId).orElse(null);
         if(invoice == null) throw new BadRequestException(Constants.MESSAGE_INVOICE_ID_NOT_EXIST);
 
         Customer customer = customerRepo.findById(customerId).orElse(null);
@@ -77,8 +78,8 @@ public class InvoiceService {
         return invoiceRepo.save(invoice);
     }
 
-    public Invoice removeCustomer(String invoiceNumber){
-        Invoice invoice = invoiceRepo.findById(invoiceNumber).orElse(null);
+    public Invoice removeCustomer(String invoiceId){
+        Invoice invoice = invoiceRepo.findById(invoiceId).orElse(null);
         if(invoice == null) throw new BadRequestException(Constants.MESSAGE_INVOICE_ID_NOT_EXIST);
 
         invoice.setCustomer(null);

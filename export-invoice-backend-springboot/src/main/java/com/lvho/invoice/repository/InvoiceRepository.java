@@ -7,5 +7,5 @@ import com.lvho.invoice.entity.Invoice;
 
 @Repository
 public interface InvoiceRepository extends JpaRepository<Invoice, String> {
-    public Invoice findByNumber(String number);
+    // public Invoice findByNumber(String number);
 }

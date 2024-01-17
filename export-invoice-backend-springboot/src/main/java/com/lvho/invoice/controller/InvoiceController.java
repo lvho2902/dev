@@ -63,25 +63,25 @@ public class InvoiceController
 
     @PostMapping("/invoice/set-customer")
     public ResponseEntity<InvoiceResponse> setCustomer(@RequestBody InvoiceCustomerRequest request){
-        Invoice invoice = service.setCustomer(request.invoiceNumber, request.customerId);
+        Invoice invoice = service.setCustomer(request.invoiceId, request.customerId);
         return ResponseEntity.status(HttpStatus.OK).body(mapper.convertToInvoiceResponse(invoice));
     }
 
     @PostMapping("/invoice/remove-customer")
     public ResponseEntity<InvoiceResponse> removeCustomer(@RequestBody InvoiceCustomerRequest request){
-        Invoice invoice = service.removeCustomer(request.invoiceNumber);
+        Invoice invoice = service.removeCustomer(request.invoiceId);
         return ResponseEntity.status(HttpStatus.OK).body(mapper.convertToInvoiceResponse(invoice));
     }
 
     @PostMapping("invoice/add-project")
     public ResponseEntity<InvoiceResponse> addProjects(@RequestBody InvoiceProjectRequest request) {
-        InvoiceResponse invoiceResponse = mapper.convertToInvoiceResponse(service.addProjects(request.invoiceNumber, request.projectIds));
+        InvoiceResponse invoiceResponse = mapper.convertToInvoiceResponse(service.addProjects(request.invoiceId, request.projectIds));
         return ResponseEntity.status(HttpStatus.CREATED).body(invoiceResponse);
     }
 
     @PostMapping("invoice/remove-project")
     public ResponseEntity<InvoiceResponse> removeProjects(@RequestBody InvoiceProjectRequest request) {
-        InvoiceResponse invoiceResponse = mapper.convertToInvoiceResponse(service.removeProjects(request.invoiceNumber, request.projectIds));
+        InvoiceResponse invoiceResponse = mapper.convertToInvoiceResponse(service.removeProjects(request.invoiceId, request.projectIds));
         return ResponseEntity.status(HttpStatus.CREATED).body(invoiceResponse);
     }
 }

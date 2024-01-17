@@ -54,13 +54,11 @@ public class ProjectService
         
         if(model.getName() == null || model.getName().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_NAME);
         if(!project.getName().equals(model.getName()) && projectRepo.findByName(model.getName()) != null) throw new BadRequestException(Constants.MESSAGE_SAME_PROJECT_NAME_EXIST);
-        if(model.getBillable() < 0) throw new BadRequestException(Constants.MESSAGE_INVALID_BILLABLE);
         if(model.getCapexCode() == null || model.getCapexCode().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_CAPEX_CODE);
         if(model.getStartDate() == null || model.getStartDate().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_START_DATE);
         if(model.getDueDate() == null || model.getDueDate().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_DUE_DATE);
 
         project.setName(model.getName());
-        project.setBillable(model.getBillable());
         project.setCapexCode(model.getCapexCode());
         project.setStartDate(model.getStartDate());
         project.setDueDate(model.getDueDate());

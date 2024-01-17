@@ -75,12 +75,15 @@ public class Project {
         employees.add(employee);
         employee.getProjects().add(this);
         
+        calcBillable();
     }
 
     public void removeEmployee(Employee employee){
         if(employees == null) return;
         employees.remove(employee);
         employee.getProjects().remove(this);
+
+        calcBillable();
     }
 
     public void removeThisInAllEmployee(){
@@ -88,5 +91,16 @@ public class Project {
         employees.forEach(employee -> {
             employee.getProjects().remove(this);
         });
+    }
+
+    private void calcBillable(){
+        billable = 0;
+        if(employees == null || employees.isEmpty()) return;
+        billable = employees.size();
+
+        if(invoice != null){
+            invoice.calcTotal();
+            invoice.calcRemaining();
+        }
     }
 }

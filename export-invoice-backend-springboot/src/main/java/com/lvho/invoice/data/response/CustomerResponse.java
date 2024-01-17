@@ -20,7 +20,7 @@ public class CustomerResponse {
 
     private String phone;
 
-    private String amount;
+    private int amount;
 
     private String address;
 

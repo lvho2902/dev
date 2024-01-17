@@ -11,6 +11,8 @@ import lombok.Setter;
 @Setter
 public class InvoiceResponse {
 
+    private String id;
+
     private String number;
 
     private String startDate;
@@ -18,6 +20,8 @@ public class InvoiceResponse {
     private String dueDate;
 
     private int total;
+
+    private int remaining;
 
     private CustomerResponse customer;
 
