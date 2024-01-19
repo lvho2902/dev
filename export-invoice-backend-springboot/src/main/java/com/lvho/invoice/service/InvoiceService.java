@@ -1,7 +1,12 @@
 package com.lvho.invoice.service;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -113,5 +118,42 @@ public class InvoiceService {
         });
 
         return invoiceRepo.save(invoice);
+    }
+
+    public Invoice export(String id){
+        Invoice invoice = getById(id);
+        if(invoice == null) throw new BadRequestException(Constants.MESSAGE_INVOICE_ID_NOT_EXIST);
+
+        String path = "d:\\invoice.docx";
+        String pathCoppy = "d:\\name_invoice.docx";
+        try (XWPFDocument document = new XWPFDocument(java.nio.file.Files.newInputStream(java.nio.file.Paths.get(path)))){
+            List<XWPFParagraph> xwpfParagraphList = document.getParagraphs();
+            for (XWPFParagraph xwpfParagraph : xwpfParagraphList) {
+                for (XWPFRun xwpfRun : xwpfParagraph.getRuns()) {
+                    String docText = xwpfRun.getText(0);
+                    if(docText != null){
+                        docText = docText.replace("customerName", invoice.getCustomer().getName())
+                        .replace("customerPhone", invoice.getCustomer().getPhone())
+                        .replace("customerEmail", invoice.getCustomer().getEmail())
+                        .replace("customerAddress", invoice.getCustomer().getAddress())
+                        .replace("invoiceNumber", invoice.getNumber())
+                        .replace("invoiceStartDate", invoice.getStartDate())
+                        .replace("invoiceDueDate", invoice.getDueDate());
+                            
+                        System.out.println(docText);
+                        xwpfRun.setText(docText, 0);
+                    }
+                }
+            }
+
+            FileOutputStream out = new FileOutputStream(pathCoppy.replace("name", invoice.getCustomer().getName()));
+            document.write(out);
+            document.close();
+            out.close();
+
+            return invoice;
+        } catch (IOException e) {
+            throw new BadRequestException(e.getMessage());
+        }
     }
 }
