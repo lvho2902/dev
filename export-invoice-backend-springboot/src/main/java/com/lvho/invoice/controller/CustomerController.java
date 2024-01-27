@@ -1,4 +1,6 @@
 package com.lvho.invoice.controller;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import com.lvho.invoice.service.CustomerService;
 import com.lvho.invoice.utils.Mapper;
 
 import java.util.List;
+
 @RestController
 public class CustomerController
 {
@@ -25,9 +28,12 @@ public class CustomerController
     @Autowired
     private Mapper mapper;
 
+    private static final Logger logger = LogManager.getLogger(CustomerController.class);
+
     @GetMapping("/customer")
     public List<CustomerResponse> getAll()
     {
+        logger.info("Getting all customers");
         return mapper.convertToCustomerResponse(service.getAll());
     }
 
