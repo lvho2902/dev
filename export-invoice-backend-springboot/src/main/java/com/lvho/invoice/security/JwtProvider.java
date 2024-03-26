@@ -16,6 +16,10 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.security.Key;
+import java.security.SecureRandom;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -24,13 +28,16 @@ import java.util.stream.Collectors;
 
 import com.lvho.invoice.entity.Role;
 import com.lvho.invoice.service.UserInfoDetailsService;
+import com.lvho.invoice.utils.Utils;
 
 @Component
 public class JwtProvider { 
 
 	private static final String SECRET_KEY_STRING = "SaCBnRDZbFL+9zMSKDFjDg==rLithXVduoz3TlVzWRAa5Q==SaCBnRDZbFL+9zMSKDFjDg==rLithXVduoz3TlVzWRAa5Q==";
 
-    private static final long validityInMilliseconds = 3600000;
+    private static final SecureRandom secureRandom = new SecureRandom();
+
+    private static final long validityInMinutes = 20;
 
 	@Lazy
     @Autowired
@@ -40,13 +47,10 @@ public class JwtProvider {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("auth", roles.stream().map(role-> new SimpleGrantedAuthority(role.getAuthority())).filter(Objects::nonNull).collect(Collectors.toList()));
 
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
-
         return Jwts.builder()
             .setClaims(claims)
-            .setIssuedAt(now)
-            .setExpiration(validity)
+            .setIssuedAt(Date.from(Instant.now()))
+            .setExpiration(Utils.getExpiration(validityInMinutes, ChronoUnit.HOURS))
             .signWith(getSignKey(), SignatureAlgorithm.HS512)
             .compact();
     }
@@ -97,5 +101,11 @@ public class JwtProvider {
             return bearerToken.substring(7);
         }
         return null;
+    }
+
+    public String generateRefreshToken() {
+        byte[] randomNumber = new byte[64];
+        secureRandom.nextBytes(randomNumber);
+        return Base64.getEncoder().encodeToString(randomNumber);
     }
 }

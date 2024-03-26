@@ -30,5 +30,8 @@ public final class Constants {
     public static final String MESSAGE_SAME_CUSTOMER_NAME_EXIST = "customer with the same name exists.";
     public static final String MESSAGE_SAME_CUSTOMER_EMAIL_EXIST = "customer with the same email exists.";
 
+    public static final String MESSAGE_INVALID_ACCESS_TOKEN = "access token is invalid.";
+    public static final String MESSAGE_INVALID_REFRESH_TOKEN = "request token is invalid.";
+
     public static final String MESSAGE_BAD_CREDENTIALS = "bad credentials.";
 }

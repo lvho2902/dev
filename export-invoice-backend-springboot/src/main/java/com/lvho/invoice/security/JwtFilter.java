@@ -26,8 +26,9 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final String[] ignoreCsrfAntMatchers = {
-        "/login", "/employee", "/project", "/customer", "/invoice",
-        "/employee/**", "/project/**", "/customer/**" , "/invoice/**"
+        "/employee", "/project", "/customer", "/invoice",
+        "/employee/**", "/project/**", "/customer/**" , "/invoice/**",
+        "/register", "/login", "/refresh-token"
     };
 
     public String[] getIgnoreCsrfAntMatchers(){

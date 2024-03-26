@@ -1,5 +1,6 @@
 package com.lvho.invoice.service;
 
+import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +19,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.lvho.invoice.utils.Constants;
+import com.lvho.invoice.utils.Utils;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 import com.lvho.invoice.custom.exception.BadRequestException;
 import com.lvho.invoice.custom.exception.CustomException;
+import com.lvho.invoice.data.model.TokenModel;
 import com.lvho.invoice.data.request.LoginRequest;
 import com.lvho.invoice.data.request.UserInfoRequest;
-import com.lvho.invoice.data.response.LoginResponse;
 import com.lvho.invoice.entity.Role;
 import com.lvho.invoice.entity.UserInfo;
 import com.lvho.invoice.repository.UserInfoRepository;
@@ -85,19 +87,36 @@ public class UserInfoService implements UserDetailsService {
 		return userRepo.save(userInfo);
 	}
 
-	public LoginResponse login(LoginRequest request){
+	public TokenModel login(LoginRequest request){
 		if(request.getUsername() == null || request.getUsername().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_USER_NAME);
 		if(request.getPassword() == null || request.getPassword().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_PASSWORD);
 
 		try {
 			UsernamePasswordAuthenticationToken userAuth = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
 			authenticationManager.authenticate(userAuth);
-			String token = jwtProvider.generateToken(request.getUsername(), userRepo.findByUsername(request.getUsername()).getRoles());
-			return new LoginResponse(token, jwtProvider.extractExpiration(token));
+			UserInfo userInfo = userRepo.findByUsername(request.getUsername());
+			String accessToken = jwtProvider.generateToken(request.getUsername(), userInfo.getRoles());
+			String refreshToken = jwtProvider.generateRefreshToken();
+			
+			userInfo.setRefreshToken(refreshToken);
+			userInfo.setRefreshTokenExpiryTime(Utils.getExpiration(4, ChronoUnit.HOURS));
+			userRepo.save(userInfo);
+
+			return new TokenModel(accessToken, refreshToken);
 		}
 		catch (AuthenticationException e) {
 			throw new CustomException(e.getMessage(), HttpStatus.UNAUTHORIZED);
 		}
+	}
+
+	public TokenModel refreshToken(TokenModel request){
+		if(request.getAccessToken() == null || request.getAccessToken().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_ACCESS_TOKEN);
+		if(request.getRefreshToken() == null || request.getRefreshToken().isBlank()) throw new BadRequestException(Constants.MESSAGE_INVALID_REFRESH_TOKEN);
+		Authentication authentication = getAuthentication(request.getAccessToken());
+		if(!authentication.isAuthenticated()) throw new CustomException(Constants.MESSAGE_BAD_CREDENTIALS, HttpStatus.UNAUTHORIZED);
+
+		UserDetails user = (UserDetails)authentication.getPrincipal();
+		return new TokenModel(null, null);
 	}
 
 	public Boolean validateToken(String token, UserDetails userDetails){

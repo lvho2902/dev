@@ -18,6 +18,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Date;
 
 @Entity
 @NoArgsConstructor
@@ -39,6 +40,12 @@ public class UserInfo {
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "refresh_token")
+    private String refreshToken;
+
+    @Column(name = "refresh_token_expiry_time")
+    private Date refreshTokenExpiryTime;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Role> roles;
