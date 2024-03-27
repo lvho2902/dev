@@ -2,6 +2,9 @@ package com.lvho.invoice.utils;
 
 public final class Constants {
     private Constants() {}
+    
+    public static final long REFRESH_TOKEN_EXPIRATION_MINUTES = 30;
+    public static final long ACCESS_TOKEN_EXPIRATION_MINUTES = 10;
 	
     public static final String MESSAGE_INVALID_PASSWORD = "password is invalid.";
     public static final String MESSAGE_INVALID_USER_NAME = "user name is invalid.";

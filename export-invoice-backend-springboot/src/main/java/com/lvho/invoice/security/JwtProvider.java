@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -16,10 +17,8 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.security.Key;
-import java.security.SecureRandom;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -35,22 +34,18 @@ public class JwtProvider {
 
 	private static final String SECRET_KEY_STRING = "SaCBnRDZbFL+9zMSKDFjDg==rLithXVduoz3TlVzWRAa5Q==SaCBnRDZbFL+9zMSKDFjDg==rLithXVduoz3TlVzWRAa5Q==";
 
-    private static final SecureRandom secureRandom = new SecureRandom();
-
-    private static final long validityInMinutes = 20;
-
 	@Lazy
     @Autowired
     private UserInfoDetailsService userInfoDetailsService;
 
-    public String generateToken(String username, List<Role> roles) {
+    public String generateToken(String username, List<Role> roles, long expiration) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("auth", roles.stream().map(role-> new SimpleGrantedAuthority(role.getAuthority())).filter(Objects::nonNull).collect(Collectors.toList()));
 
         return Jwts.builder()
             .setClaims(claims)
             .setIssuedAt(Date.from(Instant.now()))
-            .setExpiration(Utils.getExpiration(validityInMinutes, ChronoUnit.HOURS))
+            .setExpiration(Utils.getExpiration(expiration, ChronoUnit.SECONDS))
             .signWith(getSignKey(), SignatureAlgorithm.HS512)
             .compact();
     }
@@ -75,12 +70,11 @@ public class JwtProvider {
 	}
 
     private Claims extractAllClaims(String token) { 
-		return Jwts.parserBuilder() 
-				.setSigningKey(getSignKey()) 
-				.build() 
-				.parseClaimsJws(token) 
-				.getBody(); 
-	}
+        JwtParser parser = Jwts.parserBuilder() 
+                            .setSigningKey(getSignKey()) 
+                            .build(); 
+        return parser.parseClaimsJws(token).getBody(); 
+    }
 
     private Boolean isTokenExpired(String token) { 
 		return extractExpiration(token).before(new Date()); 
@@ -101,11 +95,5 @@ public class JwtProvider {
             return bearerToken.substring(7);
         }
         return null;
-    }
-
-    public String generateRefreshToken() {
-        byte[] randomNumber = new byte[64];
-        secureRandom.nextBytes(randomNumber);
-        return Base64.getEncoder().encodeToString(randomNumber);
     }
 }

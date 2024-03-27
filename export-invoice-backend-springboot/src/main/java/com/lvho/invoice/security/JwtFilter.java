@@ -1,6 +1,7 @@
 package com.lvho.invoice.security;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,9 +27,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final String[] ignoreCsrfAntMatchers = {
-        "/employee", "/project", "/customer", "/invoice",
-        "/employee/**", "/project/**", "/customer/**" , "/invoice/**",
-        "/register", "/login", "/refresh-token"
+        "/login", "/refresh-token", "/register"
     };
 
     public String[] getIgnoreCsrfAntMatchers(){
@@ -61,13 +60,16 @@ public class JwtFilter extends OncePerRequestFilter {
             sendErrorResponse(httpServletResponse, ex);
             return;
         }
+        catch (Exception ex){
+            httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return;
+        }
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
     private boolean isPyPassToken(HttpServletRequest httpServletRequest){
-        // return Arrays.binarySearch(getIgnoreCsrfAntMatchers(), httpServletRequest.getServletPath()) >= 0;
-        return true;
+        return Arrays.binarySearch(getIgnoreCsrfAntMatchers(), httpServletRequest.getServletPath()) >= 0;
     }
 
     private void sendErrorResponse(HttpServletResponse httpServletResponse, CustomException ex) throws IOException {
